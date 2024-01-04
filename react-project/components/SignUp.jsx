@@ -1,65 +1,56 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 function SignUp() {
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVerify, setPasswordVerify] = useState('');
     const [signUpError, setSignUpError] = useState('');
-    let foundUser;
+    let userFromDB;
 
     function handleRegistration() {
         if (!userName || !password || !passwordVerify) {
             setSignUpError('Please fill in all fields.');
+            return;
         }
-        else if (!ValidateEmail(email)) {
-        }
-        else if (!CheckPassword(password)) {
-        }
-        const url = `http://localhost:3000/users?username=${userName}`;
-        fetch(url)
+        // if (!CheckPassword(password))
+        //     return;
+      
+        fetch(`http://localhost:3000/users?username=${userName}`)
             .then(res => res.json())
             .then(user => {
-                foundUser = user[0];
-                if (foundUser != null) {
+                userFromDB = user[0];
+                if (userFromDB != null) {
                     setSignUpError('User exists, please logIn');
+                    navigate('./login')
                 }
                 else {
-                    foundUser = {
-                        "userName": userName,
-                        "website": password
-                    }
+                    navigate(`/userdetails?userName=${userName}&password=${password}`);
                 }
             })
-    }
-
-    function ValidateEmail(mailAdress) {
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (mailAdress.match(mailformat)) {
-            return true;
-        } else {
-            setSignUpError("You have entered an invalid email address!");
-            return false;
         }
-    }
-
-    function CheckPassword(password) {
-        let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
-        if (password.match(psw)) {
-            return true;
-        } else {
-            setSignUpError('Wrong password...! The password must contain letters and numbers');
-            return false;
+        
+        function CheckPassword(password) {
+            let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
+            if (password.match(psw)) {
+                return true;
+            } else {
+                setSignUpError('Wrong password...! The password must contain letters and numbers');
+                return false;
+            }
         }
-    }
-
+    
     return (
         <div >
             <h2 className="title">Create Account</h2><br />
             <input type="text" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
             <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
-            <input type="passwordCheck" className='input' value={passwordVerify} placeholder="password-verify" onChange={(e) => setPasswordVerify(e.target.value)} /><br />
-            <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />
+            <input type="password" className='input' value={passwordVerify} placeholder="password-verify" onChange={(e) => setPasswordVerify(e.target.value)} /><br />
             {signUpError && <p className='error' style={{ color: "red" }}>{signUpError}</p>}
+            <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />
+            <Link className='link' to="/login"  >Already have an account? Sign in</Link>
         </div>
     )
 };

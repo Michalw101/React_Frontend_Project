@@ -47,6 +47,8 @@
   transition: 0.2s, black 0.2s;
   margin-bottom: 0.5rem;
 }
+
+.Connect,
 .btnOkSignUp,
 .btnOkLogIn {
   width: 100%;
