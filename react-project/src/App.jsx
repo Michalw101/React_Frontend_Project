@@ -1,23 +1,27 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from "react-router"
 import LogIn from '../components/LogIn'
-import './App.css'
 import SignUp from '../components/SignUp'
+import './App.css'
 
 
 function App() {
 
-  const [state, setState] = useState("signUp");
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <div className='body'>
-      <div className="registration" >
-          {state == "signUp" && <><SignUp/><a className="link" onClick={() => setState("logIn")}>Already have an account? Sign in</a><br /><br /></>}
-          {state == "logIn" && <><LogIn userName={userName} setUserName={setUserName} password={password} setPassword={setPassword} /><a className="link" onClick={() => setState("signUp")}>Don't have an account? Create account</a><br /><br /></>}
-      </div>
-      {state == "homePage" && <HomePage/>}
-    </div>
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/login" element={<LogIn />} /> 
+        
+      </Routes>
+      <Link to="/login" >Already have an account? Sign in</Link>
+      <Link to="/register" >Dont have an account? Sign up</Link>
+    </BrowserRouter>
+
   )
 }
 
