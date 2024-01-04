@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import HomePage from '../components/HomePage'
 
-function LogIn({ userName, setUserName, password, setPassword }) {
+function LogIn() {
 
     const [loginError, setLoginError] = useState('');
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
     let user;
 
     function handleLogin() {
