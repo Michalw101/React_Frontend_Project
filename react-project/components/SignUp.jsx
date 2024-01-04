@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 function SignUp() {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
     const [passwordVerify, setPasswordVerify] = useState('');
     const [signUpError, setSignUpError] = useState('');
     let foundUser;
@@ -26,47 +25,13 @@ function SignUp() {
                 }
                 else {
                     foundUser = {
-                        "id": 0,
                         "userName": userName,
-                        "email": email,
                         "website": password
                     }
-                    // const userURL = `http://localhost:3000/users`;
-                    // fetch("POST", userURL, )
-                    // const newUser = {
-                    //     userName: userName,
-                    //     website: password
-                    // };
-                    // const requestOptions = {
-                    //     method: 'POST',
-                    //     body: JSON.stringify(newUser),
-                    // };
-                    // fetch(url, requestOptions)
-                    //     .then(response => response.json())
-                    //     .then(data => {
-                    //         console.log(data.id);       // גישה ל-id של המשתמש החדש
-                    //         console.log(data.userName); //  גישה ל-userName של המשתמש החדש
-                    //         console.log(data.website);   // גישה ל-website של המשתמש החדש
-                    //         localStorage.setItem(userName, JSON.stringify(data));
-                    //         setSignUpError('User created successfully');
-                    //         setVeriftPassword("");
-                    //         setUserName("");
-                    //         setPassword("");
-                    //     })
-                    //     .catch(error => {
-                    //         setSignUpError('Error creating user');
-                    //     });
                 }
             })
-
-        // localStorage.setItem(email, JSON.stringify(user));
-        // setPlayersArray(prevPlayersArr => [...prevPlayersArr, user]);
-        // setEmail("");
-        // setName("");
-        // setPassword("");
-        // setSignUpError('Registration successful');
-
     }
+
     function ValidateEmail(mailAdress) {
         let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (mailAdress.match(mailformat)) {
@@ -91,7 +56,6 @@ function SignUp() {
         <div >
             <h2 className="title">Create Account</h2><br />
             <input type="text" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
-            <input type="email" className='input' value={email} placeholder="email" onChange={(e) => setEmail(e.target.value)} /><br />
             <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
             <input type="passwordCheck" className='input' value={passwordVerify} placeholder="password-verify" onChange={(e) => setPasswordVerify(e.target.value)} /><br />
             <button className="btnOkSignUp" onClick={handleRegistration}>Connect</button><br />

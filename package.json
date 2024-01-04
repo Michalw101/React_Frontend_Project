@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "react-router-dom": "^6.21.1"
+    "react-router-dom": "^6.21.1",
+    "react-router-use-history": "^1.1.0"
   }
 }
