@@ -31,7 +31,7 @@ function LogIn() {
     }
 
     return (
-        <div >
+        <div className='registration'>
             <h2 className="title">Log in</h2><br />
             <input type="userName" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
             <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />

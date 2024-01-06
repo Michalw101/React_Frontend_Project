@@ -18,7 +18,6 @@ function App() {
         <Route path="/userdetails" element={<UserDetails />} />
         </Routes>
     </BrowserRouter>
-
   )
 }
 

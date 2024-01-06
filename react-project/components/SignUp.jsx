@@ -15,6 +15,10 @@ function SignUp() {
             setSignUpError('Please fill in all fields.');
             return;
         }
+        if (password != passwordVerify) {
+            setSignUpError('The passwords are not the same.');
+            return;
+        }
         // if (!CheckPassword(password))
         //     return;
       
@@ -43,7 +47,7 @@ function SignUp() {
         }
     
     return (
-        <div >
+        <div className='registration'>
             <h2 className="title">Create Account</h2><br />
             <input type="text" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
             <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
