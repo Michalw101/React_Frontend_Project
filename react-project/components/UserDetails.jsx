@@ -37,43 +37,55 @@ const UserDetails = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    if (name.includes('.'))
-    {
-      const [nestedProp, nestedKey] = name.split('.');
-      if (nestedKey.includes('.')){
-        const [nestedProp1, nestedKey1] = name.split('.');
-        setUser((prevUser) => ({
-          ...prevUser,
-          [nestedProp]: {
-            ...prevUser[nestedProp],
-            [nestedProp1]:
-            {
-              ...prevUser[nestedProp1],
-              [nestedKey1]: value
-            } 
-          }
-        }));
-      }
-      else{
-        setUser((prevUser) => ({
-          ...prevUser,
-          [nestedProp]: {
-            ...prevUser[nestedProp],
-            [nestedKey]: value
-          }
-        }));
-      }      
-    }
-    else {
+   
       setUser((prevUser) => ({
         ...prevUser,
         [name]: value
       }));
-    }
     console.log(user)
   }
 
+  const addressChange= (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+          ...prevUser,
+          "address": {
+            ...prevUser["address"],
+            [name]: value
+          }
+        }));
+  }
+
+  
+  const geoChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      "address": {
+        ...prevUser["address"],
+        "geo": {
+          ...prevUser["address"]["geo"],
+          [name]: value
+        }
+      }
+    }));
+  };
+
+  
+  const companyChange= (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+          ...prevUser,
+          "company": {
+            ...prevUser["company"],
+            [name]: value
+          }
+        }));
+  }
+
+
   const postUser = () => {
+    
     setUser(prevUser => ({
       ...prevUser,
       username: user_Name,
@@ -88,8 +100,9 @@ const UserDetails = () => {
       .then((response) => response.json())
       .then((data) => {
         setUser((prevUser) => ({ ...prevUser, id: data.id }));
-        localStorage.setItem("currentUser", user[0].id);
-        localStorage.setItem(user[0].id, JSON.stringify(user[0]));
+        console.log(data.id)
+        localStorage.setItem("currentUser", user.id);
+        localStorage.setItem(user.id, JSON.stringify(user));
         navigate('/home');
       })
       .catch((error) => {
@@ -105,21 +118,20 @@ const UserDetails = () => {
       <h2 className="title">User Details</h2><br />
       <input type="text" className='input' value={user.name} name="name" placeholder="name" onChange={handleChange} /><br />
       <input type="text" className='input' value={user.email} name="email" placeholder="email" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.street} name="address.street" placeholder="street" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.suite} name="address.suite" placeholder="suite" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.city} name="address.city" placeholder="city" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.zipcode} name="address.zipcode" placeholder="zipcode" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.geo.lat} name="address.geo.lat" placeholder="lat" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.address.geo.lng} name="address.geo.lng" placeholder="lng" onChange={handleChange} /><br />
+      <input type="text" className='input' value={user.address.street} name="street" placeholder="street" onChange={addressChange} /><br />
+      <input type="text" className='input' value={user.address.suite} name="suite" placeholder="suite" onChange={addressChange} /><br />
+      <input type="text" className='input' value={user.address.city} name="city" placeholder="city" onChange={addressChange} /><br />
+      <input type="text" className='input' value={user.address.zipcode} name="zipcode" placeholder="zipcode" onChange={addressChange} /><br />
+      <input type="text" className='input' value={user.address.geo.lat} name="lat" placeholder="lat" onChange={geoChange} /><br />
+      <input type="text" className='input' value={user.address.geo.lng} name="lng" placeholder="lng" onChange={geoChange} /><br />
       <input type="text" className='input' value={user.phone} name="phone" placeholder="phone" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.company.name} name="company.name" placeholder="company's name" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.company.catchPhrase} name="company.catchPhrase" placeholder="catch phrase" onChange={handleChange} /><br />
-      <input type="text" className='input' value={user.company.bs} name="company.bs" placeholder="bs" onChange={handleChange} /><br />
+      <input type="text" className='input' value={user.company.name} name="name" placeholder="company's name" onChange={companyChange} /><br />
+      <input type="text" className='input' value={user.company.catchPhrase} name="catchPhrase" placeholder="catch phrase" onChange={companyChange} /><br />
+      <input type="text" className='input' value={user.company.bs} name="bs" placeholder="bs" onChange={companyChange} /><br />
       {signUpError && <p className='error' style={{ color: "red" }}>{signUpError}</p>}
       <button className="Connect" onClick={postUser}>Connect</button><br />
     </div>
   )
 }
-
 
 export default UserDetails
