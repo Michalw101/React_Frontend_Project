@@ -11,7 +11,7 @@ const UserDetails = () => {
   const [user, setUser] = useState({
     id: "",
     name: "",
-    username: "",
+    username: user_Name,
     email: "",
     address: {
       street: "",
@@ -24,7 +24,7 @@ const UserDetails = () => {
       }
     },
     phone: "",
-    website: "",
+    website: user_Password,
     company: {
       name: "",
       catchPhrase: "",
@@ -85,12 +85,6 @@ const UserDetails = () => {
 
 
   const postUser = () => {
-    
-    setUser(prevUser => ({
-      ...prevUser,
-      username: user_Name,
-      website: user_Password,}));
-
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

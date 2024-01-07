@@ -20,7 +20,7 @@ function LogIn() {
                 if (user && user[0] && user[0].website == password) {
                     setLoginError("");
                     localStorage.setItem("currentUser", user[0].id);
-                    localStorage.setItem( user[0].id, JSON.stringify(user[0]));
+                    localStorage.setItem(user[0].id, JSON.stringify(user[0]));
                     navigate('/home');
                 }
                 else if (!userName || !password)
