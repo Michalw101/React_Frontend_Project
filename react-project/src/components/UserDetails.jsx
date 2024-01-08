@@ -1,62 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom"
+import { UserContext } from "../App"
+
 
 const UserDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUser, user } = useContext(UserContext);
   const searchParams = new URLSearchParams(location.search);
   const user_Name = searchParams.get('userName');
   const user_Password = searchParams.get('password');
-
-  const [user, setUser] = useState({
-    id: "",
-    name: "",
-    username: user_Name,
-    email: "",
-    address: {
-      street: "",
-      suite: "",
-      city: "",
-      zipcode: "",
-      geo: {
-        lat: "",
-        lng: ""
-      }
-    },
-    phone: "",
-    website: user_Password,
-    company: {
-      name: "",
-      catchPhrase: "",
-      bs: ""
-    }
-  });
-
   const [signUpError, setSignUpError] = useState('');
+
+  useEffect(() => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      "username": user_Name,
+      "website": user_Password
+    }));
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-   
-      setUser((prevUser) => ({
-        ...prevUser,
-        [name]: value
-      }));
+
+
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value
+    }));
     console.log(user)
   }
 
-  const addressChange= (e) => {
+  const addressChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
-          ...prevUser,
-          "address": {
-            ...prevUser["address"],
-            [name]: value
-          }
-        }));
+      ...prevUser,
+      "address": {
+        ...prevUser["address"],
+        [name]: value
+      }
+    }));
   }
 
-  
+
   const geoChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
@@ -71,20 +57,21 @@ const UserDetails = () => {
     }));
   };
 
-  
-  const companyChange= (e) => {
+
+  const companyChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
-          ...prevUser,
-          "company": {
-            ...prevUser["company"],
-            [name]: value
-          }
-        }));
+      ...prevUser,
+      "company": {
+        ...prevUser["company"],
+        [name]: value
+      }
+    }));
   }
 
 
   const postUser = () => {
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -93,18 +80,22 @@ const UserDetails = () => {
     fetch(`http://localhost:3000/users`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        setUser((prevUser) => ({ ...prevUser, id: data.id }));
-        console.log(data.id)
-        localStorage.setItem("currentUser", user.id);
-        localStorage.setItem(user.id, JSON.stringify(user));
-        navigate('/home');
+        setUser((prevUser) => ({ ...prevUser, "id": data.id }));
+        handleLocalStorage(data.id);
       })
       .catch((error) => {
         setSignUpError(error.toString());
         console.error('There was an error!', error);
       });
+     
   };
 
+  const handleLocalStorage = (newUserId) => {
+    const updatedUser = { ...user, "id": newUserId };
+    localStorage.setItem("currentUser", newUserId);
+    localStorage.setItem(newUserId, JSON.stringify(updatedUser));
+    navigate('/home');
+  };
 
   return (
 

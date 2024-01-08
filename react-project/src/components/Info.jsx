@@ -1,11 +1,11 @@
 import React from 'react'
-import '../src/Info.css'
+import '../Info.css'
 
 const Info = () => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const user =  JSON.parse(localStorage.getItem(currentUser));
   return (
-    <div>
+    <div className='info'>
     <h2>User Details</h2>
     <ul>
       <li><strong>ID:</strong> {user.id}</li>

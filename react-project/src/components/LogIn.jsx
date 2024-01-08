@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom"
+import { UserContext } from "../App.jsx"
+import '../App.css'
 
 
 function LogIn() {
@@ -9,7 +11,8 @@ function LogIn() {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     let user;
-
+    const { setUser } = useContext(UserContext);
+    
     function handleLogin() {
         const userURL = `http://localhost:3000/users?username=${userName}`;
         fetch(userURL)
@@ -21,6 +24,7 @@ function LogIn() {
                     setLoginError("");
                     localStorage.setItem("currentUser", user[0].id);
                     localStorage.setItem(user[0].id, JSON.stringify(user[0]));
+                    setUser(user[0]);
                     navigate('/home');
                 }
                 else if (!userName || !password)

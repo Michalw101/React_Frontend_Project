@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import {  Link, Outlet } from 'react-router-dom';
-import '../src/HomePage.css'
+import { UserContext } from "../App.jsx"
+import '../HomePage.css'
 
 const HomePage = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const user =  JSON.parse(localStorage.getItem(currentUser));
+  const { user } = useContext(UserContext);
   return (
     <div>
       <nav>
