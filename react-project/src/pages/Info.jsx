@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import '../Info.css'
+import { UserContext } from "../App.jsx"
+
 
 const Info = () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const user =  JSON.parse(localStorage.getItem(currentUser));
+  const { user } = useContext(UserContext);
+
   return (
     <div className='info'>
     <h2>User Details</h2>

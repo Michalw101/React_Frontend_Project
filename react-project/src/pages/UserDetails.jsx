@@ -3,27 +3,26 @@ import { useNavigate, useLocation } from "react-router-dom"
 import { UserContext } from "../App"
 
 
-const UserDetails = () => {
+const UserDetails = ({setUser}) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { setUser, user } = useContext(UserContext);
-  const searchParams = new URLSearchParams(location.search);
-  const user_Name = searchParams.get('userName');
-  const user_Password = searchParams.get('password');
+  // const location = useLocation();
+  const { user } = useContext(UserContext);
+  // const searchParams = new URLSearchParams(location.search);
+  // const user_Name = searchParams.get('userName');
+  // const user_Password = searchParams.get('password');
   const [signUpError, setSignUpError] = useState('');
 
-  useEffect(() => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      "username": user_Name,
-      "website": user_Password
-    }));
-  }, [])
+  // useEffect(() => {
+  //   setUser((prevUser) => ({
+  //     ...prevUser,
+  //     "username": user_Name,
+  //     "website": user_Password
+  //   }));
+  // }, [])
 
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
-
-
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value
@@ -41,7 +40,6 @@ const UserDetails = () => {
       }
     }));
   }
-
 
   const geoChange = (e) => {
     const { name, value } = e.target;

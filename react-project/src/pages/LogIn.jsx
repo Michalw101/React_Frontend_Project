@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom"
-import { UserContext } from "../App.jsx"
+// import { UserContext } from "../App.jsx"
 import '../App.css'
 
 
-function LogIn() {
+function LogIn({setUser}) {
 
     const navigate = useNavigate();
     const [loginError, setLoginError] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     let user;
-    const { setUser } = useContext(UserContext);
+    // const { setUser } = useContext(UserContext);
     
     function handleLogin() {
         const userURL = `http://localhost:3000/users?username=${userName}`;
@@ -25,7 +25,7 @@ function LogIn() {
                     localStorage.setItem("currentUser", user[0].id);
                     localStorage.setItem(user[0].id, JSON.stringify(user[0]));
                     setUser(user[0]);
-                    navigate('/home');
+                    navigate('/home');   
                 }
                 else if (!userName || !password)
                     setLoginError('Please fill in all fields.');
@@ -33,6 +33,8 @@ function LogIn() {
                     setLoginError("Username or password is not correct")
             })
     }
+
+  
 
     return (
         <div className='registration'>

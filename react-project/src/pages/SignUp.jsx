@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 
-function SignUp() {
+function SignUp({ setUser }) {
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +21,7 @@ function SignUp() {
         }
         // if (!CheckPassword(password))
         //     return;
-      
+
         fetch(`http://localhost:3000/users?username=${userName}`)
             .then(res => res.json())
             .then(user => {
@@ -31,21 +31,29 @@ function SignUp() {
                     navigate('./login')
                 }
                 else {
-                    navigate(`/userdetails?userName=${userName}&password=${password}`);
+                    // navigate(`/userdetails?userName=${userName}&password=${password}`);
+                    setUser((prevUser) => ({
+                        ...prevUser,
+                        "username": userName,
+                        "website": password
+                    }));
+                    navigate(`/userdetails?userName=${userName}`);
                 }
-            })
+            });
+
+    }
+
+
+    function CheckPassword(password) {
+        let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
+        if (password.match(psw)) {
+            return true;
+        } else {
+            setSignUpError('Wrong password...! The password must contain letters and numbers');
+            return false;
         }
-        
-        function CheckPassword(password) {
-            let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
-            if (password.match(psw)) {
-                return true;
-            } else {
-                setSignUpError('Wrong password...! The password must contain letters and numbers');
-                return false;
-            }
-        }
-    
+    }
+
     return (
         <div className='registration'>
             <h2 className="title">Create Account</h2><br />

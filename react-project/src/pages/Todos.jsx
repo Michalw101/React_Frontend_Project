@@ -86,14 +86,7 @@ const Todos = () => {
 
       <ul>
         {sortedAndFilteredTodos().map((todo) => (
-          <li key={todo.id}>
-            <p>{todo.id} {todo.title}
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              disabled
-            /></p>
-          </li>
+          <Todo todt={todo}/>
         ))}
       </ul>
     </div>

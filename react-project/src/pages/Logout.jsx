@@ -1,14 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../App.jsx"
 import '../App.css';
 
-const Logout = () => {
+
+
+const Logout = ({setUser}) => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     if (confirmLogout) {
-      localStorage.clear();
+      localStorage.setItem(user.id, null);
+      localStorage.setItem("currentUser", null);
+      setUser({
+        id: "",
+        name: "",
+        username: "",
+        email: "",
+        address: {
+          street: "",
+          suite: "",
+          city: "",
+          zipcode: "",
+          geo: {
+            lat: "",
+            lng: ""
+          }
+        },
+        phone: "",
+        website: "",
+        company: {
+          name: "",
+          catchPhrase: "",
+          bs: ""
+        }
+      })
       navigate('/login');
     }
   }, [confirmLogout, navigate]);
