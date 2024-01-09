@@ -23,12 +23,12 @@ function SignUp({ setUser }) {
         //     return;
 
         fetch(`http://localhost:3000/users?username=${userName}`)
-            .then(res => res.json())
+            .then(Response => Response.json())
             .then(user => {
                 userFromDB = user[0];
                 if (userFromDB != null) {
                     setSignUpError('User exists, please logIn');
-                    navigate('./login')
+                    navigate('/login')
                 }
                 else {
                     // navigate(`/userdetails?userName=${userName}&password=${password}`);

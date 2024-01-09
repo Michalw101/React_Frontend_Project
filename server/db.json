@@ -39837,94 +39837,19 @@
         "catchPhrase": "Centralized empowering task-force",
         "bs": "target end-to-end models"
       }
-    },
-    {
-      "id": 11,
-      "name": "michal walden",
-      "username": "f",
-      "email": "NW0548455073@gmail.com",
-      "address": {
-        "street": "a",
-        "suite": "b",
-        "city": "c",
-        "zipcode": "d",
-        "geo": {
-          "lat": "e",
-          "lng": "f"
-        }
-      },
-      "phone": "0244442444",
-      "website": "1",
-      "company": {
-        "name": "h",
-        "catchPhrase": "i",
-        "bs": "f"
-      }
-    },
-    {
-      "id": 12,
-      "name": "michal walden",
-      "username": "we",
-      "email": "A0583295187@GMAIL.COM",
-      "address": {
-        "street": "a",
-        "suite": "b",
-        "city": "c",
-        "zipcode": "d",
-        "geo": {
-          "lat": "e",
-          "lng": "f"
-        }
-      },
-      "phone": "0283295188",
-      "website": "12",
-      "company": {
-        "name": "f",
-        "catchPhrase": "i",
-        "bs": "f"
-      }
-    },
-    {
-      "id": 13,
-      "name": "",
-      "username": "aaa",
-      "email": "",
-      "address": {
-        "street": "",
-        "suite": "",
-        "city": "",
-        "zipcode": "",
-        "geo": {
-          "lat": "",
-          "lng": ""
-        }
-      },
-      "phone": "",
-      "website": "a",
-      "company": {
-        "name": "",
-        "catchPhrase": "",
-        "bs": ""
-      }
     }
   ],
   "todos": [
     {
       "userId": 1,
-      "id": 18,
-      "title": "dolorum est consequatur ea mollitia in culpa",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 19,
-      "title": "molestiae ipsa aut voluptatibus pariatur dolor nihil",
+      "id": 15,
+      "title": "ab voluptatum amet voluptas",
       "completed": true
     },
     {
       "userId": 1,
-      "id": 20,
-      "title": "ullam nobis libero sapiente ad optio sint",
+      "id": 17,
+      "title": "quo laboriosam deleniti aut qui",
       "completed": true
     },
     {
@@ -41006,6 +40931,18 @@
       "id": 200,
       "title": "ipsam aperiam voluptates qui",
       "completed": false
+    },
+    {
+      "title": "aaaaaaa",
+      "completed": false,
+      "userId": 1,
+      "id": 201
+    },
+    {
+      "title": "to do everithing",
+      "completed": false,
+      "userId": 1,
+      "id": 202
     }
   ]
 }

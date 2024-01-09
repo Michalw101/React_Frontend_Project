@@ -7,6 +7,8 @@ const Todos = () => {
   const [todos, setTodos] = useState(null);
   const [sortBy, setSortBy] = useState('sequential');
   const [searchBy, setSearchBy] = useState('');
+  const [addTodo, setAddTodo] = useState(false);
+  const [newTodo, setNewTodo] = useState({ title: '', completed: false });
 
   useEffect(() => {
     fetch(`http://localhost:3000/todos?userId=${user.id}`)
@@ -24,8 +26,6 @@ const Todos = () => {
   if (todos.length === 0) {
     return <h1>No todos found.</h1>
   }
-
-
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
@@ -45,7 +45,6 @@ const Todos = () => {
       );
     }
 
-    // Sort by sort criterion
     switch (sortBy) {
       case 'completed':
         return filteredTodos.sort((a, b) => a.completed - b.completed);
@@ -56,11 +55,31 @@ const Todos = () => {
       case 'random':
         return filteredTodos.sort(() => Math.random());
       default:
-        // Default: sort sequentially
         return filteredTodos;
     }
   };
 
+  const addTodoClicked = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...newTodo, userId: user.id })
+    };
+
+    fetch('http://localhost:3000/todos', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        setTodos([...todos, data]);
+        setAddTodo(false);
+        setNewTodo({ title: '', completed: false });
+      })
+      .catch(error => console.error('There was an error!', error));
+  };
+
+  const cancelAddTodo = () => {
+    setAddTodo(false);
+    setNewTodo({ title: '', completed: false });
+  };
 
   return (
     <div>
@@ -85,10 +104,27 @@ const Todos = () => {
         />
       </div>
 
+      {addTodo ? (
+        <div>
+          <input
+            type="text"
+            value={newTodo.title}
+            onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+            placeholder="Todo title"
+          />
+          <button onClick={addTodoClicked}>Add Todo</button>
+          <button onClick={cancelAddTodo}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setAddTodo((prev) => !prev)}>➕</button>
+      )}
+
+
       <ul>
         {sortedAndFilteredTodos().map(
           (todo) => (
-            todo.userId === user.id && <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
+            todo.userId === user.id && 
+            <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
           ))}
       </ul>
     </div>

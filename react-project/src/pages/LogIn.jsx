@@ -44,7 +44,6 @@ function LogIn({setUser}) {
             {loginError && <p className='error' style={{ color: "red" }}>{loginError}</p>}
             <button className="btnOkLogIn" onClick={handleLogin}>Connect</button>
             <Link className='link' to="/register" >Dont have an account? Sign up</Link>
-
         </div>
     );
 }
