@@ -6,14 +6,15 @@ import '../App.css';
 
 
 const Logout = ({setUser}) => {
-  const { user } = useContext(UserContext);
+  const  user = useContext(UserContext);
   const navigate = useNavigate();
   const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     if (confirmLogout) {
-      localStorage.setItem(user.id, null);
       localStorage.setItem("currentUser", null);
+      localStorage.removeItem(user.id);
+
       setUser({
         id: "",
         name: "",

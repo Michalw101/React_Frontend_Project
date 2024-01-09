@@ -4,7 +4,7 @@ import { UserContext } from "../App.jsx"
 
 
 const Info = () => {
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
 
   return (
     <div className='info'>
@@ -31,7 +31,6 @@ const Info = () => {
         </ul>
       </li>
       <li><strong>Phone:</strong> {user.phone}</li>
-      <li><strong>Website:</strong> {user.website}</li>
       <li>
         <strong>Company:</strong>
         <ul>

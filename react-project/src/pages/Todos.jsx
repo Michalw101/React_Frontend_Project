@@ -1,8 +1,9 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
+import Todo from '../components/Todo.jsx';
 
 const Todos = () => {
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
   const [todos, setTodos] = useState(null);
   const [sortBy, setSortBy] = useState('sequential');
   const [searchBy, setSearchBy] = useState('');
@@ -24,7 +25,7 @@ const Todos = () => {
     return <h1>No todos found.</h1>
   }
 
-  
+
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
@@ -49,7 +50,7 @@ const Todos = () => {
       case 'completed':
         return filteredTodos.sort((a, b) => a.completed - b.completed);
       case 'sequential':
-          return filteredTodos.sort((a, b) => a.id - b.id);
+        return filteredTodos.sort((a, b) => a.id - b.id);
       case 'alphabetical':
         return filteredTodos.sort((a, b) => a.title.localeCompare(b.title));
       case 'random':
@@ -85,9 +86,10 @@ const Todos = () => {
       </div>
 
       <ul>
-        {sortedAndFilteredTodos().map((todo) => (
-          <Todo todt={todo}/>
-        ))}
+        {sortedAndFilteredTodos().map(
+          (todo) => (
+            todo.userId === user.id && <Todo key={todo.id} todo={todo} />
+          ))}
       </ul>
     </div>
   )

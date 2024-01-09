@@ -14,29 +14,31 @@ export const UserContext = createContext(null);
 
 function App() {
 
-  const [user, setUser] = useState({
-    id: "",
-    name: "",
-    username: "",
-    email: "",
-    address: {
-      street: "",
-      suite: "",
-      city: "",
-      zipcode: "",
-      geo: {
-        lat: "",
-        lng: ""
-      }
-    },
-    phone: "",
-    website: "",
-    company: {
+  const [user, setUser] = useState(
+    {
+      id: "",
       name: "",
-      catchPhrase: "",
-      bs: ""
+      username: "",
+      email: "",
+      address: {
+        street: "",
+        suite: "",
+        city: "",
+        zipcode: "",
+        geo: {
+          lat: "",
+          lng: ""
+        }
+      },
+      phone: "",
+      website: "",
+      company: {
+        name: "",
+        catchPhrase: "",
+        bs: ""
+      }
     }
-  });
+  );
 
   return (
     <UserContext.Provider value={user}>

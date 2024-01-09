@@ -4,7 +4,7 @@ import { UserContext } from "../App.jsx"
 import '../HomePage.css'
 
 const HomePage = () => {
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
   return user && (<div>
     <nav>
       <Link to="info" >Info</Link>

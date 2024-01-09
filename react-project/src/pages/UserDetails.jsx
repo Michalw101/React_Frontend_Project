@@ -5,20 +5,8 @@ import { UserContext } from "../App"
 
 const UserDetails = ({setUser}) => {
   const navigate = useNavigate();
-  // const location = useLocation();
-  const { user } = useContext(UserContext);
-  // const searchParams = new URLSearchParams(location.search);
-  // const user_Name = searchParams.get('userName');
-  // const user_Password = searchParams.get('password');
+  const user = useContext(UserContext);  
   const [signUpError, setSignUpError] = useState('');
-
-  // useEffect(() => {
-  //   setUser((prevUser) => ({
-  //     ...prevUser,
-  //     "username": user_Name,
-  //     "website": user_Password
-  //   }));
-  // }, [])
 
   const handleChange = (e) => {
     
