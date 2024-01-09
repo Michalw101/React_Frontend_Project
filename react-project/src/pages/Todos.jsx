@@ -31,7 +31,7 @@ const Todos = () => {
     setSortBy(event.target.value);
   };
 
-  const handleSearchChange = (event) => {
+ const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
   };
 
@@ -119,11 +119,10 @@ const Todos = () => {
         <button onClick={() => setAddTodo((prev) => !prev)}>➕</button>
       )}
 
-
       <ul>
         {sortedAndFilteredTodos().map(
           (todo) => (
-            todo.userId === user.id && 
+            todo.userId === user.id &&
             <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
           ))}
       </ul>
