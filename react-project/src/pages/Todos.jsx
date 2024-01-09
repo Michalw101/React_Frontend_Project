@@ -88,7 +88,7 @@ const Todos = () => {
       <ul>
         {sortedAndFilteredTodos().map(
           (todo) => (
-            todo.userId === user.id && <Todo key={todo.id} todo={todo} />
+            todo.userId === user.id && <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
           ))}
       </ul>
     </div>
