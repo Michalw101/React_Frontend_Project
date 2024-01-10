@@ -1,11 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { UserContext } from "../App.jsx"
+
+
 
 const Post = ({ post, setPosts, posts }) => {
 
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
   const [copyPost, setCopyPost] = useState({ ...post });
   const [formPost, setFormPost] = useState(false);
-  const [postTitle, setPostTitle] = useState(false);
-  const [postBody, setPostBody] = useState(false);
+  const [editState, setEditState] = useState(false);
+  const [viewComments, setViewComment] = useState(false);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setCopyPost((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  }
 
   function deleteTodoClicked() {
     const requestOptions = {
@@ -13,6 +28,7 @@ const Post = ({ post, setPosts, posts }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(copyPost)
     };
+
     fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
       .then(() => {
         let i, updatePosts;
@@ -31,27 +47,64 @@ const Post = ({ post, setPosts, posts }) => {
       });
   }
 
-  function permissionUpdatePost()
-  {
-
+  function permissionUpdatePost() {
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(copyPost)
+    };
+    fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        let i, updatePosts;
+        posts.map((p, index) => {
+          if (p.id === data.id) {
+            i = index;
+          }
+          return p;
+        });
+        updatePosts = [...posts];
+        updatePosts[i] = data;
+        setPosts(updatePosts);
+        setFormPost(false)
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
   }
+
 
   return (
     <>
       <div>
         <p>ID: {post.id}</p>
-        <h2 onDoubleClick={() => { setFormPost((prev) => !prev) }}>{post.title}</h2>
+        <h2 onDoubleClick={() => {
+          setFormPost((prev) => !prev),
+            setEditState(false);
+          navigate(`/home/users/${user.id}/posts/${post.id}`);
+        }}>{post.title}</h2>
         <button onClick={deleteTodoClicked}>🚽</button>
       </div>
       {formPost && <div className='postDetails'>
-            <h2>{copyPost.id}</h2><br />
-            <input type="postTitle" className='input' value={copyPost.title} onChange={(e) => setPostTitle(e.target.value)} /><br />
-            <input type="postBody" className='input' value={copyPost.body} onChange={(e) => setPostBody(e.target.value)} /><br />
-            <button onClick={permissionUpdatePost}>✅</button>
-            <button onClick={()=>{setFormPost(false)}}>❎</button>
-        </div>}
+        <h2>{copyPost.id}</h2><br />
+        <input type="text" name="title" className='input' value={copyPost.title} onChange={handleChange} disabled={!editState} /><br />
+        <input type="text" name="body" className='input' value={copyPost.body} onChange={handleChange} disabled={!editState} /><br />
+        {viewComments && <Outlet />}
+        {!editState && <>
+          <button onClick={() =>
+            setEditState(true)}>🪁</button>
+          <button onClick={() => {
+            navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
+            setViewComment((prev) => !prev)
+          }}>🍾</button>
+        </>}
+        {editState && <>
+          <button onClick={permissionUpdatePost}>✅</button>
+          <button onClick={() => { setFormPost(false) }}>❎</button>
+        </>}
+      </div>}
     </>
   );
 };
 
-      export default Post;
+export default Post;

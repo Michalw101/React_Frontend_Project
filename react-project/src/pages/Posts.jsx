@@ -144,7 +144,6 @@ const Posts = () => {
 
       <ul>
         {sortedAndFilteredPosts().map((post) => (
-          post.userId === user.id &&
           <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
         ))}
       </ul>

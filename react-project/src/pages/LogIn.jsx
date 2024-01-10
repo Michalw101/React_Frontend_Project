@@ -39,7 +39,7 @@ function LogIn({setUser}) {
     return (
         <div className='registration'>
             <h2 className="title">Log in</h2><br />
-            <input type="userName" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
+            <input type="text" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
             <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
             {loginError && <p className='error' style={{ color: "red" }}>{loginError}</p>}
             <button className="btnOkLogIn" onClick={handleLogin}>Connect</button>
