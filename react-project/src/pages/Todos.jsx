@@ -4,11 +4,12 @@ import Todo from '../components/Todo.jsx';
 
 const Todos = () => {
   const user = useContext(UserContext);
-  const [todos, setTodos] = useState(null);
+  const [todos, setTodos] = useState([]);
   const [sortBy, setSortBy] = useState('sequential');
   const [searchBy, setSearchBy] = useState('');
   const [addTodo, setAddTodo] = useState(false);
   const [newTodo, setNewTodo] = useState({ title: '', completed: false });
+  const [searchCheckbox, setSearchCheckbox] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3000/todos?userId=${user.id}`)
@@ -31,17 +32,24 @@ const Todos = () => {
     setSortBy(event.target.value);
   };
 
- const handleSearchChange = (event) => {
+  const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
+  };
+
+  const handleSearchCheckboxChange = () => {
+    setSearchCheckbox((prev) => !prev);
+    setSearchBy("completed");
   };
 
   const sortedAndFilteredTodos = () => {
     let filteredTodos = todos;
 
-    if (searchBy) {
+    if (searchBy != null) {
       filteredTodos = todos.filter(todo =>
-        todo.title.toLowerCase().includes(searchBy.toLowerCase()) ||
-        todo.id.toString().includes(searchBy)
+        (searchBy == "completed" && todo.completed === searchCheckbox) ||
+        (searchBy != "completed" &&
+          todo.title.toLowerCase().includes(searchBy.toLowerCase()) ||
+          todo.id.toString().includes(searchBy))
       );
     }
 
@@ -74,7 +82,7 @@ const Todos = () => {
         setNewTodo({ title: '', completed: false });
       })
       .catch(error => console.error('There was an error!', error));
-  };
+  }
 
   const cancelAddTodo = () => {
     setAddTodo(false);
@@ -86,13 +94,35 @@ const Todos = () => {
       <h1>Todos</h1>
       <div>
         <label htmlFor="sort">Sort by:</label>
-        <select id="sort" value={sortBy} onChange={handleSortChange}>
+        <select id="sort"
+          value={sortBy}
+          onChange={handleSortChange}>
           <option value="sequential">Sequential</option>
           <option value="completed">Completed</option>
           <option value="alphabetical">Alphabetical</option>
           <option value="random">Random</option>
         </select>
       </div>
+
+      {/* <div>
+        <label htmlFor="search">Search:</label>
+        <input
+          type="text"
+          id="search"
+          value={searchBy}
+          onChange={handleSearchChange}
+        />
+        <input
+          type="checkbox"
+          checked={searchCheckbox}
+          name="searchCheckbox"
+          onChange={() => {
+            setSearchCheckbox((prev) => !prev);
+            searchCheckbox ? setSearchBy("completed") : setSearchBy("not-completed");
+          }}
+        />
+      </div> */}
+
 
       <div>
         <label htmlFor="search">Search:</label>
@@ -102,6 +132,13 @@ const Todos = () => {
           value={searchBy}
           onChange={handleSearchChange}
         />
+        <input
+          type="checkbox"
+          checked={searchCheckbox}
+          name="searchCheckbox"
+          onChange={handleSearchCheckboxChange}
+        />
+        <label htmlFor="searchCheckbox">Completed</label>
       </div>
 
       {addTodo ? (

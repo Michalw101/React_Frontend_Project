@@ -10,7 +10,7 @@ const Posts = () => {
   const [newPost, setNewPost] = useState({ title: '', body: '' });
 
   useEffect(() => {
-    fetch("http://localhost:3000/post")
+    fetch(`http://localhost:3000/posts/${to_do.id}`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
