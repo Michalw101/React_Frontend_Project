@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
+import Post from "../components/Post.jsx"
 
 const Posts = () => {
   const user = useContext(UserContext);
@@ -8,19 +9,36 @@ const Posts = () => {
   const [searchBy, setSearchBy] = useState('');
   const [addPost, setAddPost] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
+  const [showAllPosts, setShowAllPosts] = useState(false)
+
+  let filteredPosts = posts;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts/${to_do.id}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setPosts(data);
-      })
+    // if (!showAllPosts) {
+      fetch(`http://localhost:3000/posts/?userId=${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setPosts(data);
+        })
+    // }
   }, [user.id]);
+
+  // useEffect(() => {
+  //   if (showAllPosts) {
+  //     fetch(`http://localhost:3000/posts`)
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         console.log(data);
+  //         setPosts(data);
+  //       })
+  //   }
+  // }, [showAllPosts]);
 
   if (!posts) {
     return <h1>Loading...</h1>
   }
+
   if (posts.length === 0) {
     return <h1>No posts found.</h1>
   }
@@ -32,9 +50,9 @@ const Posts = () => {
   const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
   };
-  
+
   const sortedAndFilteredPosts = () => {
-    let filteredPosts = posts;
+     filteredPosts = posts;
 
     if (searchBy) {
       filteredPosts = posts.filter(post =>
@@ -44,14 +62,13 @@ const Posts = () => {
     }
 
     switch (sortBy) {
-      case 'completed':
-        return filteredPosts.sort((a, b) => a.completed - b.completed);
+
       case 'sequential':
         return filteredPosts.sort((a, b) => a.id - b.id);
       case 'alphabetical':
         return filteredPosts.sort((a, b) => a.title.localeCompare(b.title));
       case 'random':
-        return filteredPosts.sort(() => Math.random());
+        return filteredPosts.sort(() => Math.random() - 0.5);
       default:
         return filteredPosts;
     }
@@ -61,15 +78,15 @@ const Posts = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...newTodo, userId: user.id })
+      body: JSON.stringify({ ...newPost, userId: user.id })
     };
 
     fetch('http://localhost:3000/posts', requestOptions)
       .then(response => response.json())
       .then(data => {
-        setTodos([...todos, data]);
-        setAddTodo(false);
-        setNewTodo({ title: '', completed: false });
+        setPosts([...posts, data]);
+        setAddPost(false);
+        setNewPost({ title: '', completed: false });
       })
       .catch(error => console.error('There was an error!', error));
   };
@@ -80,14 +97,58 @@ const Posts = () => {
   };
 
   return (
-    <ul>
-    {sortedAndFilteredTodos().map(
-      (todo) => (
-        todo.userId === user.id &&
-        <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
-      ))}
-  </ul>
-  )
+    <>
+      <h1>Posts</h1>
+
+      {/* <button onClick={() => setShowAllPosts((prev) => !prev)}>show all posts</button> */}
+      <div>
+        <label htmlFor="sort">Sort by:</label>
+        <select id="sort"
+          value={sortBy}
+          onChange={handleSortChange}>
+          <option value="sequential">Sequential</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="random">Random</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="search">Search:</label>
+        <input
+          type="text"
+          id="search"
+          value={searchBy}
+          onChange={handleSearchChange}
+        />
+      </div>
+      {addPost ? (
+        <div>
+          <input
+            type="text"
+            value={newPost.title}
+            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+            placeholder="Post title"
+          />
+          <input
+            type="text"
+            value={newPost.body}
+            onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
+            placeholder="Post body"
+          />
+          <button onClick={addPostClicked}>Add Post</button>
+          <button onClick={cancelAddPost}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setAddPost((prev) => !prev)}>➕</button>
+      )}
+
+      <ul>
+        {sortedAndFilteredPosts().map((post) => (
+          post.userId === user.id &&
+          <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
+        ))}
+      </ul>
+    </>)
 }
 
 export default Posts

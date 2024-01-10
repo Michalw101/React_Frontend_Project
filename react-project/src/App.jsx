@@ -53,6 +53,7 @@ function App() {
             <Route path="users/:id/info" element={<Info />} />
             <Route path="users/:id/todos" element={<Todos />} />
             <Route path="users/:id/posts" element={<Posts />} />
+            <Route path="users/:id/posts/:id" element={<Posts />} />
             <Route path="users/:id/albums" element={<Albums />} />
             <Route path="logout" element={<Logout setUser={setUser}/>} />
           </Route>

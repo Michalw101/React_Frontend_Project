@@ -61,7 +61,7 @@ const Todos = () => {
       case 'alphabetical':
         return filteredTodos.sort((a, b) => a.title.localeCompare(b.title));
       case 'random':
-        return filteredTodos.sort(() => Math.random());
+        return filteredTodos.sort(() => Math.random() - 0.5);
       default:
         return filteredTodos;
     }
@@ -103,26 +103,6 @@ const Todos = () => {
           <option value="random">Random</option>
         </select>
       </div>
-
-      {/* <div>
-        <label htmlFor="search">Search:</label>
-        <input
-          type="text"
-          id="search"
-          value={searchBy}
-          onChange={handleSearchChange}
-        />
-        <input
-          type="checkbox"
-          checked={searchCheckbox}
-          name="searchCheckbox"
-          onChange={() => {
-            setSearchCheckbox((prev) => !prev);
-            searchCheckbox ? setSearchBy("completed") : setSearchBy("not-completed");
-          }}
-        />
-      </div> */}
-
 
       <div>
         <label htmlFor="search">Search:</label>
