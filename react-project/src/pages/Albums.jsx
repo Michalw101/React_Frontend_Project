@@ -1,100 +1,80 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState} from 'react';
+import {Link } from "react-router-dom"
 import { UserContext } from "../App.jsx"
+import Album from '../components/Album.jsx';
 
 const Albums = () => {
 
   const user = useContext(UserContext);
-  const [alboms, setAlboms] = useState(null);
-  const [sortBy, setSortBy] = useState('sequential');
+  const [albums, setAlbums] = useState(null);
   const [searchBy, setSearchBy] = useState('');
+  const [addAlbum, setAddAlbum] = useState(false);
+  const [newAlbum, setNewAlbum] = useState({ title: '', id: '' });
+  let filteredAlbums = albums;
 
   useEffect(() => {
-      fetch(`http://localhost:3000/alboms/?userId=${user.id}`)
+      fetch(`http://localhost:3000/albums/?userId=${user.id}`)
         .then(res => res.json())
         .then(data => {
           console.log(data);
-          setAlboms(data);
+          setAlbums(data);
         })
   }, []);
 
-  if (!alboms) {
-    return <h1>Loading...</h1>
+  if (!albums) {
+    // return <h1>Loading...</h1>
+    return <img src="../images/Load"/>
   }
 
-  if (alboms.length === 0) {
-    return <h1>No posts found.</h1>
+  if (albums.length === 0) {
+    return <h1>No albums found.</h1>
   }
-
-    const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
 
   const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
   };
 
-  const sortedAndFilteredPosts = () => {
-     filteredPosts = posts;
+  const sortedAndFilteredAlbums = () => {
+    filteredAlbums = albums;
 
     if (searchBy) {
-      filteredPosts = posts.filter(post =>
+      filteredAlbums = albums.filter(post =>
         post.title.toLowerCase().includes(searchBy.toLowerCase()) ||
         post.id.toString().includes(searchBy)
       );
     }
+    return filteredAlbums;
 
-    switch (sortBy) {
-
-      case 'sequential':
-        return filteredPosts.sort((a, b) => a.id - b.id);
-      case 'alphabetical':
-        return filteredPosts.sort((a, b) => a.title.localeCompare(b.title));
-      case 'random':
-        return filteredPosts.sort(() => Math.random() - 0.5);
-      default:
-        return filteredPosts;
-    }
   };
 
 
- // const addPostClicked = () => {
+ const addAlbumClicked = () => {
     
-    //   const requestOptions = {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ ...newPost, userId: user.id })
-    //   };
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...newAlbum, userId: user.id })
+      };
   
-    //   fetch('http://localhost:3000/posts', requestOptions)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       setPosts([...posts, data]);
-    //       setAddPost(false);
-    //       setNewPost({ title: '', completed: false });
-    //     })
-    //     .catch(error => console.error('There was an error!', error));
-    // };
+      fetch('http://localhost:3000/albums', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          setAlbums([...albums, data]);
+          setAddAlbum(false);
+          setNewAlbum({ title: '', id: '' });
+        })
+        .catch(error => console.error('There was an error!', error));
+    };
   
-   // const cancelAddPost = () => {
-  //   setAddPost(false);
-  //   setNewPost({ title: '', completed: false });
-  // };
+   const cancelAddAlbum = () => {
+    setAddAlbum(false);
+    setNewAlbum({ title: '', id: ''});
+  };
 
 
   return (
     <>
-    <h1>Alboms</h1>
-
-    <div>
-      <label htmlFor="sort">Sort by:</label>
-      <select id="sort"
-        value={sortBy}
-        onChange={handleSortChange}>
-        <option value="sequential">Sequential</option>
-        <option value="alphabetical">Alphabetical</option>
-        <option value="random">Random</option>
-      </select>
-    </div>
+    <h1>Albums</h1>
 
     <div>
       <label htmlFor="search">Search:</label>
@@ -105,31 +85,26 @@ const Albums = () => {
         onChange={handleSearchChange}
       />
     </div>
-    {addPost ? (
+
+    {addAlbum ? (
       <div>
         <input
           type="text"
-          value={newPost.title}
-          onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-          placeholder="Post title"
+          value={newAlbum.title}
+          onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
+          placeholder="Album title"
         />
-        <input
-          type="text"
-          value={newPost.body}
-          onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
-          placeholder="Post body"
-        />
-        <button onClick={addPostClicked}>Add Post</button>
-        <button onClick={cancelAddPost}>Cancel</button>
+        <button onClick={addAlbumClicked}>Add Album</button>
+        <button onClick={cancelAddAlbum}>Cancel</button>
       </div>
     ) : (
-      <button onClick={() => setAddPost((prev) => !prev)}>➕</button>
+      <button onClick={() => setAddAlbum((prev) => !prev)}>➕</button>
     )}
 
     <ul>
-      {sortedAndFilteredPosts().map((post) => (
-        <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
-      ))}
+      {sortedAndFilteredAlbums().map((album) => ( <Link key={album.id} to={`/home/users/${user.id}/albums/${album.id}/photos`}>        
+      <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
+</Link>))}
     </ul>
   </>  )
 }

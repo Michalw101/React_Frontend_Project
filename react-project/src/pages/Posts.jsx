@@ -5,7 +5,7 @@ import Post from "../components/Post.jsx"
 const Posts = () => {
   const user = useContext(UserContext);
   const [posts, setPosts] = useState(null);
-  const [sortBy, setSortBy] = useState('sequential');
+  // const [sortBy, setSortBy] = useState('sequential');
   const [searchBy, setSearchBy] = useState('');
   const [addPost, setAddPost] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
@@ -36,16 +36,18 @@ const Posts = () => {
   // }, [showAllPosts]);
 
   if (!posts) {
-    return <h1>Loading...</h1>
+    // return <h1>Loading...</h1>
+    return <img src="../images/Loading.gif"/>
+
   }
 
   if (posts.length === 0) {
     return <h1>No posts found.</h1>
   }
 
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
+  // const handleSortChange = (event) => {
+  //   setSortBy(event.target.value);
+  // };
 
   const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
@@ -60,18 +62,18 @@ const Posts = () => {
         post.id.toString().includes(searchBy)
       );
     }
+    return filteredPosts;
+    // switch (sortBy) {
 
-    switch (sortBy) {
-
-      case 'sequential':
-        return filteredPosts.sort((a, b) => a.id - b.id);
-      case 'alphabetical':
-        return filteredPosts.sort((a, b) => a.title.localeCompare(b.title));
-      case 'random':
-        return filteredPosts.sort(() => Math.random() - 0.5);
-      default:
-        return filteredPosts;
-    }
+    //   case 'sequential':
+    //     return filteredPosts.sort((a, b) => a.id - b.id);
+    //   case 'alphabetical':
+    //     return filteredPosts.sort((a, b) => a.title.localeCompare(b.title));
+    //   case 'random':
+    //     return filteredPosts.sort(() => Math.random() - 0.5);
+    //   default:
+    //     return filteredPosts;
+    // }
   };
 
   const addPostClicked = () => {
@@ -87,14 +89,14 @@ const Posts = () => {
       .then(data => {
         setPosts([...posts, data]);
         setAddPost(false);
-        setNewPost({ title: '', completed: false });
+        setNewPost({ title: '', body: '' });
       })
       .catch(error => console.error('There was an error!', error));
   };
 
   const cancelAddPost = () => {
     setAddPost(false);
-    setNewPost({ title: '', completed: false });
+    setNewPost({ title: '', body: '' });
   };
 
   return (
@@ -102,7 +104,7 @@ const Posts = () => {
       <h1>Posts</h1>
 
       {/* <button onClick={() => setShowAllPosts((prev) => !prev)}>show all posts</button> */}
-      <div>
+      {/* <div>
         <label htmlFor="sort">Sort by:</label>
         <select id="sort"
           value={sortBy}
@@ -111,7 +113,7 @@ const Posts = () => {
           <option value="alphabetical">Alphabetical</option>
           <option value="random">Random</option>
         </select>
-      </div>
+      </div> */}
 
       <div>
         <label htmlFor="search">Search:</label>
