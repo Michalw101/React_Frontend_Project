@@ -47,7 +47,7 @@ const Post = ({ post, setPosts, posts }) => {
       });
   }
 
-  function permissionUpdatePost() {
+  function handleSubmit() {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -84,22 +84,22 @@ const Post = ({ post, setPosts, posts }) => {
           navigate(`/home/users/${user.id}/posts/${post.id}`);
         }}>{post.title}</h2>
         <button onClick={deleteTodoClicked}>🚽</button>
+        <button onClick={() => {
+            navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
+            setViewComment((prev) => !prev)
+          }}>🍾</button>
       </div>
+      {viewComments && <Outlet  /> }
       {formPost && <div className='postDetails'>
         <h2>{copyPost.id}</h2><br />
         <input type="text" name="title" className='input' value={copyPost.title} onChange={handleChange} disabled={!editState} /><br />
         <input type="text" name="body" className='input' value={copyPost.body} onChange={handleChange} disabled={!editState} /><br />
-        {viewComments && <Outlet />}
         {!editState && <>
           <button onClick={() =>
             setEditState(true)}>🪁</button>
-          <button onClick={() => {
-            navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
-            setViewComment((prev) => !prev)
-          }}>🍾</button>
         </>}
         {editState && <>
-          <button onClick={permissionUpdatePost}>✅</button>
+          <button onClick={handleSubmit}>✅</button>
           <button onClick={() => { setFormPost(false) }}>❎</button>
         </>}
       </div>}

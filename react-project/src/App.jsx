@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { createContext, useState } from 'react';
 import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
@@ -45,18 +45,19 @@ function App() {
     <UserContext.Provider value={user}>
       <BrowserRouter basename="/">
         <Routes>
-          <Route path="/" element={<LogIn setUser={setUser} />} />
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LogIn setUser={setUser} />} />
           <Route path="/register" element={<SignUp setUser={setUser} />} />
           <Route path="/userdetails" element={<UserDetails setUser={setUser} />} />
           <Route path="/home" element={<HomePage />}>
-            <Route path="users/:id/info" element={<Info />} />
-            <Route path="users/:id/todos" element={<Todos />} />
-            <Route path="users/:id/posts" element={<Posts />} />
-            <Route path="users/:id/posts/:postId" element={<Posts />}>
+            <Route path="users/:userId/info" element={<Info />} />
+            <Route path="users/:userId/todos" element={<Todos />} />
+            <Route path="users/:userId/posts" element={<Posts />} />
+            <Route path="users/:userId/posts/:postId" element={<Posts />}>
               <Route path="comments" element={<Comments />} />
+              <Route path="comments/:commentId" element={<Comments />} />
             </Route>
-            <Route path="users/:id/albums" element={<Albums />} />
+            <Route path="users/:userId/albums" element={<Albums />} />
             <Route path="logout" element={<Logout setUser={setUser} />} />
           </Route>
         </Routes>

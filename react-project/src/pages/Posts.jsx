@@ -22,7 +22,7 @@ const Posts = () => {
           setPosts(data);
         })
     // }
-  }, [user.id]);
+  }, []);
 
   // useEffect(() => {
   //   if (showAllPosts) {
@@ -75,6 +75,7 @@ const Posts = () => {
   };
 
   const addPostClicked = () => {
+    
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -147,7 +148,8 @@ const Posts = () => {
           <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
         ))}
       </ul>
-    </>)
+    </>
+    )
 }
 
 export default Posts
