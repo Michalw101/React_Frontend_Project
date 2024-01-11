@@ -9,7 +9,7 @@ const Posts = () => {
   const [searchBy, setSearchBy] = useState('');
   const [addPost, setAddPost] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
-  const [showAllPosts, setShowAllPosts] = useState(false)
+  // const [showAllPosts, setShowAllPosts] = useState(false)
 
   let filteredPosts = posts;
 

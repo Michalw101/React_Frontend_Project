@@ -2,8 +2,6 @@ import { useNavigate, Outlet } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import { UserContext } from "../App.jsx"
 
-
-
 const Post = ({ post, setPosts, posts }) => {
 
   const user = useContext(UserContext);

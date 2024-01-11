@@ -10,6 +10,8 @@ const Comment = ({ comment, setComments, comments }) => {
 
   const [copyComment, setCopyComment] = useState({ ...comment });
   const [editState, setEditState] = useState(false);
+  const [error, setError] = useState('');
+
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -52,9 +54,10 @@ const Comment = ({ comment, setComments, comments }) => {
     {
       setEditState((prev) => !prev);
       navigate(`/home/users/${user.id}/posts/${comment.postId}/comments/${comment.id}`);
+
     }
     else
-      alert("you cannot edit this comment :(")
+    setError("you cannot edit this comment :(")
   }
   function deleteClicked(){
     if (user.email === comment.email){
@@ -83,12 +86,13 @@ const Comment = ({ comment, setComments, comments }) => {
 
     }
     else
-    alert("you cannot delete this comment :(")
+    setError("you cannot delete this comment :(")
 
   }
 
   return (
     <>
+      <p style={{color:"red"}}>{error}</p>
       <div>
         <p>ID: {comment.id}</p>
         <h2>{comment.email}</h2>
