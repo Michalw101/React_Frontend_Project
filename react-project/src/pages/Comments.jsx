@@ -8,16 +8,16 @@ const Comments = () => {
     const [comments, setComments] = useState([]);
     const [addComments, setAddComments] = useState([]);
     let { postId } = useParams();
+    postId = parseInt(postId, 10);
 
-
-        useEffect(() => {
-            fetch(`http://localhost:3000/comments?postId=${postId}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    setComments(data);
-                })
-        });
+    useEffect(() => {
+        fetch(`http://localhost:3000/comments?postId=${postId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setComments(data);
+            })
+    }, []);
 
     // if (!comments) {
     //     return <h1>Loading...</h1>
