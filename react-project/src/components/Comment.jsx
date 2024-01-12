@@ -49,7 +49,7 @@ const Comment = ({ comment, setComments, comments }) => {
       });
 
   }
-  function EditClicked() {
+  function editClicked() {
     if (user.email === comment.email)
     {
       setEditState((prev) => !prev);
@@ -118,7 +118,7 @@ const Comment = ({ comment, setComments, comments }) => {
           />
         </label>
         <hr />
-        <button onClick={EditClicked}>Edit</button>
+        <button onClick={editClicked}>Edit</button>
         <button onClick={deleteClicked}>🚽</button>
 
 
