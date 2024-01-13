@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect} from 'react';
 import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
 import HomePage from './pages/HomePage'
@@ -43,6 +43,14 @@ function App() {
       }
     }
   );
+
+  useEffect(() => {
+    if (!user) {
+      const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+      setUser(storedUser);
+    }
+  }, [user])
+
 
   return (
     <UserContext.Provider value={user}>
