@@ -8,34 +8,20 @@ const Posts = () => {
   const [searchBy, setSearchBy] = useState('');
   const [addPost, setAddPost] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
-   const [showAllPosts, setShowAllPosts] = useState(false)
+  const [showAllPosts, setShowAllPosts] = useState(false)
 
-  let filteredPosts = posts;
-
-  useEffect(() => {
-     if (!showAllPosts) {
-      fetch(`http://localhost:3000/posts/?userId=${user.id}`)
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          setPosts(data);
-        })
-     }
-  }, [ ,showAllPosts]);
 
   useEffect(() => {
-    if (showAllPosts) {
-      fetch(`http://localhost:3000/posts`)
-        .then(res => res.json())
-        .then(data => {
-          setPosts(data);
-          console.log(data);
-        })
-    }
-  }, [showAllPosts]);
+    fetch(`http://localhost:3000/posts`)
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data);
+        console.log(data);
+      })
+  }, []);
 
   if (!posts) {
-    return <img src="../images/Loading.gif"/>
+    return <img src="../images/Loading.gif" />
   }
 
   if (posts.length === 0) {
@@ -48,7 +34,11 @@ const Posts = () => {
 
   const filterPosts = () => {
 
-     filteredPosts = posts;
+    let filteredPosts = showAllPosts ?
+      posts :
+      posts != null ?
+        posts.filter((p) => p.userId === user.id) :
+        posts;
 
     if (searchBy) {
       filteredPosts = posts.filter(post =>
@@ -60,7 +50,7 @@ const Posts = () => {
   };
 
   const addPostClicked = () => {
-    
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -86,9 +76,9 @@ const Posts = () => {
     <>
       <h1>Posts</h1>
 
-     {showAllPosts? 
-     <button onClick={() => setShowAllPosts(false)}>show my posts</button>:
-     <button onClick={() => setShowAllPosts(true)}>show all posts</button>}
+      {showAllPosts ?
+        <button onClick={() => setShowAllPosts(false)}>show my posts</button> :
+        <button onClick={() => setShowAllPosts(true)}>show all posts</button>}
       <div>
         <label htmlFor="search">Search:</label>
         <input
@@ -125,7 +115,7 @@ const Posts = () => {
         ))}
       </ul>
     </>
-    )
+  )
 }
 
 export default Posts
