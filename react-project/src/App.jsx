@@ -11,6 +11,8 @@ import Albums from "./pages/Albums"
 import Logout from "./pages/Logout"
 import Comments from "./pages/Comments";
 import Photos from "./pages/Photos";
+import './App.css'
+
 
 export const UserContext = createContext(null);
 
@@ -60,9 +62,8 @@ function App() {
               <Route path="comments/:commentId" element={<Comments />} />
             </Route>
             <Route path="users/:userId/albums" element={<Albums />} />
-            <Route path="users/:userId/albums/:albumId" element={<Albums />} >
-              <Route path="photos" element={<Photos />} />
-            </Route>
+            <Route path="users/:userId/albums/:albumId" element={<Albums />} />
+            <Route path="users/:userId/albums/:albumId/photos" element={<Photos />} />
             <Route path="logout" element={<Logout setUser={setUser} />} />
           </Route>
         </Routes>

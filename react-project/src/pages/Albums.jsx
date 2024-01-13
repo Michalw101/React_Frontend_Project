@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Link } from "react-router-dom"
 import { UserContext } from "../App.jsx"
 import Album from '../components/Album.jsx';
-
+import '../App.css'
 const Albums = () => {
 
   const user = useContext(UserContext);
@@ -11,12 +11,11 @@ const Albums = () => {
   const [addAlbum, setAddAlbum] = useState(false);
   const [newAlbum, setNewAlbum] = useState({ title: '', id: '' });
   let filteredAlbums = albums;
-
+  let returnMassege = "";
   useEffect(() => {
     fetch(`http://localhost:3000/albums/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setAlbums(data);
       })
   }, []);
@@ -26,10 +25,8 @@ const Albums = () => {
     return <img src="/images/load.gif" alt="Loading..." />;
   }
 
-
-
   if (albums.length === 0) {
-    return <h1>No albums found.</h1>
+    returnMassege = <h1>No albums found.</h1>
   }
 
   const handleSearchChange = (event) => {
@@ -77,7 +74,7 @@ const Albums = () => {
   return (
     <>
       <h1>Albums</h1>
-
+      {returnMassege}
       <div>
         <label htmlFor="search">Search:</label>
         <input
@@ -104,9 +101,9 @@ const Albums = () => {
       )}
 
       <ul>
-        {sortedAndFilteredAlbums().map((album) => (<Link key={album.id} to={`/home/users/${user.id}/albums/${album.id}/photos`}>
+        {sortedAndFilteredAlbums().map((album) => (
           <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
-        </Link>))}
+       ))}
       </ul>
     </>)
 }

@@ -18,7 +18,6 @@ const Comments = () => {
     fetch(`http://localhost:3000/comments?postId=${postId}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         setComments(data);
       })
   }, []);

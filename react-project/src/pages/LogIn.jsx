@@ -18,7 +18,6 @@ function LogIn({setUser}) {
             .then(response => response.json())
             .then(data => {
                 user = data[0];
-                console.log(user);
                 if (user  && user.website == password) {
                     setLoginError("");
                     localStorage.setItem("currentUser", user.id);

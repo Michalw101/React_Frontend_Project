@@ -10,12 +10,11 @@ const Todos = () => {
   const [addTodo, setAddTodo] = useState(false);
   const [newTodo, setNewTodo] = useState({ title: '', completed: false });
   const [searchCheckbox, setSearchCheckbox] = useState(false);
-
+  let returnMassege = "";
   useEffect(() => {
     fetch(`http://localhost:3000/todos?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setTodos(data);
       })
   }, [user.id]);
@@ -25,7 +24,7 @@ const Todos = () => {
   }
 
   if (todos.length === 0) {
-    return <h1>No todos found.</h1>
+    returnMassege = <h1>No todos found.</h1>
   }
 
   const handleSortChange = (event) => {
@@ -92,6 +91,7 @@ const Todos = () => {
   return (
     <div>
       <h1>Todos</h1>
+      {returnMassege}
       <div>
         <label htmlFor="sort">Sort by:</label>
         <select id="sort"

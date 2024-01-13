@@ -15,7 +15,6 @@ const UserDetails = ({setUser}) => {
       ...prevUser,
       [name]: value
     }));
-    console.log(user)
   }
 
   const addressChange = (e) => {
