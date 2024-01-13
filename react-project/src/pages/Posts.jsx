@@ -10,6 +10,7 @@ const Posts = () => {
   const [newPost, setNewPost] = useState({ title: '', body: '' });
   const [showAllPosts, setShowAllPosts] = useState(false)
 
+  let returnMassege;
 
   useEffect(() => {
     fetch(`http://localhost:3000/posts`)
@@ -24,8 +25,8 @@ const Posts = () => {
     return <img src="../images/Loading.gif" />
   }
 
-  if (posts.length === 0) {
-    return <h1>No posts found.</h1>
+  if (posts.filter((p) => p.userId === user.id).length === 0) {
+    returnMassege = <h1>No posts found.</h1>
   }
 
   const handleSearchChange = (event) => {
@@ -75,19 +76,7 @@ const Posts = () => {
   return (
     <>
       <h1>Posts</h1>
-
-      {showAllPosts ?
-        <button onClick={() => setShowAllPosts(false)}>show my posts</button> :
-        <button onClick={() => setShowAllPosts(true)}>show all posts</button>}
-      <div>
-        <label htmlFor="search">Search:</label>
-        <input
-          type="text"
-          id="search"
-          value={searchBy}
-          onChange={handleSearchChange}
-        />
-      </div>
+      {returnMassege}
       {addPost ? (
         <div>
           <input
@@ -108,12 +97,28 @@ const Posts = () => {
       ) : (
         <button onClick={() => setAddPost((prev) => !prev)}>➕</button>
       )}
+      <div>
+        {showAllPosts ? (
+          <button onClick={() => setShowAllPosts(false)}>show my posts</button>
+        ) : (
+          <button onClick={() => setShowAllPosts(true)}>show all posts</button>
+        )}
+        <div>
+          <label htmlFor="search">Search:</label>
+          <input
+            type="text"
+            id="search"
+            value={searchBy}
+            onChange={handleSearchChange}
+          />
+        </div>
 
-      <ul>
-        {filterPosts().map((post) => (
-          <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
-        ))}
-      </ul>
+        <ul>
+          {filterPosts().map((post) => (
+            <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
+          ))}
+        </ul>
+      </div>
     </>
   )
 }

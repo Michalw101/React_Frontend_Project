@@ -11,6 +11,7 @@ const Post = ({ post, setPosts, posts }) => {
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
 
+
   function handleChange(e) {
     const { name, value } = e.target;
 
@@ -21,39 +22,28 @@ const Post = ({ post, setPosts, posts }) => {
   }
 
   function deletePostClicked() {
-    if (user.id != post.userId)
-      alert("you can not delete this post :(");
-    else {
-      const requestOptions = {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(copyPost)
-      };
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(copyPost)
+    };
 
-      fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
-        .then(() => {
-          let i, updatePosts;
-          posts.map((t, index) => {
-            if (t.id === copyPost.id) {
-              i = index;
-            }
-            return t;
-          });
-          updatePosts = [...posts]
-          updatePosts.splice(i, 1);
-          setPosts(updatePosts);
-        })
-        .catch((error) => {
-          console.error('There was an error!', error);
+    fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
+      .then(() => {
+        let i, updatePosts;
+        posts.map((t, index) => {
+          if (t.id === copyPost.id) {
+            i = index;
+          }
+          return t;
         });
-    }
-  }
-
-  function editPostClicked() {
-    if (user.id != post.userId)
-      alert("you can not edit this post :(");
-    else
-      setEditState(true);
+        updatePosts = [...posts]
+        updatePosts.splice(i, 1);
+        setPosts(updatePosts);
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
   }
 
   function handleSubmit() {
@@ -80,8 +70,13 @@ const Post = ({ post, setPosts, posts }) => {
       .catch((error) => {
         console.error('There was an error!', error);
       });
+    navigate(`/home/users/${user.id}/posts`);
   }
 
+  function resetEdit(){
+    navigate(`/home/users/${user.id}/posts`);
+    setEditState(false);
+  }
 
   return (
     <>
@@ -92,7 +87,7 @@ const Post = ({ post, setPosts, posts }) => {
             setEditState(false);
           navigate(`/home/users/${user.id}/posts/${post.id}`);
         }}>{post.title}</h2>
-        <button onClick={deletePostClicked}>🚽</button>
+        {(user.id == post.userId) && <button onClick={deletePostClicked}>🚽</button>}
         <button onClick={() => {
           navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
             setViewComment((prev) => !prev)
@@ -101,8 +96,6 @@ const Post = ({ post, setPosts, posts }) => {
       {viewComments && <Outlet />}
       {formPost && <div className='postDetails'>
         <h2>{copyPost.id}</h2><br />
-        {/* <input type="text" name="title" className='input' value={copyPost.title} onChange={handleChange} disabled={!editState} /><br />
-        <input type="text" name="body" className='input' value={copyPost.body} onChange={handleChange} disabled={!editState} /><br /> */}
 
         <label>
           Post title:
@@ -124,18 +117,10 @@ const Post = ({ post, setPosts, posts }) => {
           />
         </label>
 
-
-        {/* {!editState && <>
-          <button onClick={editPostClicked}>🪁</button>
-        </>} */}
-        {/* {editState && <>
-          <button onClick={handleSubmit}>✅</button>
-          <button onClick={() => { setFormPost(false) }}>❎</button>
-        </>} */}
         <hr />
-        {!editState &&<button onClick={editPostClicked}>Edit</button>}
+        {(user.id == post.userId) && !editState && <button onClick={()=> setEditState(true)}>Edit</button>}
         {editState && <><button onClick={handleSubmit}>Save Post</button>
-          <button>Reset edits</button></>}
+          <button onClick={resetEdit}>Reset edits</button></>}
       </div>}
     </>
   );

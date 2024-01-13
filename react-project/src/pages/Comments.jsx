@@ -5,55 +5,58 @@ import Comment from '../components/Comment.jsx';
 
 
 const Comments = () => {
-    const user = useContext(UserContext);
-    const [comments, setComments] = useState(null);
-    const [addComment, setAddComment] = useState(false);
-    const [newComment, setNewComment]= useState({ name: '', body: '' });
-    let { postId } = useParams();
-    postId = parseInt(postId, 10);
+  const user = useContext(UserContext);
+  const [comments, setComments] = useState(null);
+  const [addComment, setAddComment] = useState(false);
+  const [newComment, setNewComment] = useState({ name: '', body: '' });
+  let { postId } = useParams();
+  postId = parseInt(postId, 10);
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/comments?postId=${postId}`)
-            .then(response => response.json())
-            .then(data => { 
-                console.log(data);
-                setComments(data);
-            })
-    }, []);
+  let returnMassege;
 
-    if (!comments) {
-        return <h1>Loading...</h1>
-    }
+  useEffect(() => {
+    fetch(`http://localhost:3000/comments?postId=${postId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setComments(data);
+      })
+  }, []);
 
-    if (comments.length === 0) {
-        return <h1>No comments found.</h1>
-    }
+  if (!comments) {
+    return <h1>Loading...</h1>
+  }
 
-      const addCommentClicked = () => {
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...newComment, postId: postId, email: user.email })
-        };
+  if (comments.length === 0) {
+    returnMassege = <h1>No comments found.</h1>
+  }
 
-        fetch('http://localhost:3000/todos', requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            setComments([...comments, data]);
-            setAddComment(false);
-            setNewComment({ name: '', body: '' });
-          })
-          .catch(error => console.error('There was an error!', error));
-      }
+  const addCommentClicked = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...newComment, postId: postId, email: user.email })
+    };
 
-    const cancelAddComment = () => {
+    fetch('http://localhost:3000/todos', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        setComments([...comments, data]);
         setAddComment(false);
         setNewComment({ name: '', body: '' });
-      };
+      })
+      .catch(error => console.error('There was an error!', error));
+  }
 
-    return (
-        <>
-            {addComment ? (
+  const cancelAddComment = () => {
+    setAddComment(false);
+    setNewComment({ name: '', body: '' });
+  };
+
+  return (
+    <>
+    {returnMassege}
+      {addComment ? (
         <div>
           <input
             type="text"
@@ -75,15 +78,16 @@ const Comments = () => {
         <button onClick={() => setAddComment((prev) => !prev)}>➕ COMMENT</button>
       )}
 
-            <ul>
-                {comments.map(
-                    (comment) => (
-                        <Comment key={comment.id} comment={comment} setComments={setComments} comments={comments}/>
-                    ))}
-            </ul>
-        </>
 
-    )
+      <ul>
+        {comments.map(
+          (comment) => (
+            <Comment key={comment.id} comment={comment} setComments={setComments} comments={comments} />
+          ))}
+      </ul>
+    </>
+
+  )
 }
 
 export default Comments

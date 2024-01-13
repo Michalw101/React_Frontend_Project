@@ -53,6 +53,7 @@ function App() {
           <Route path="/home" element={<HomePage />}>
             <Route path="users/:userId/info" element={<Info />} />
             <Route path="users/:userId/todos" element={<Todos />} />
+            <Route path="users/:userId/todos/:todoId" element={<Todos />} />
             <Route path="users/:userId/posts" element={<Posts />} />
             <Route path="users/:userId/posts/:postId" element={<Posts />}>
               <Route path="comments" element={<Comments />} />
@@ -60,7 +61,7 @@ function App() {
             </Route>
             <Route path="users/:userId/albums" element={<Albums />} />
             <Route path="users/:userId/albums/:albumId" element={<Albums />} >
-              <Route path="photos" element={<Photos/>}/>
+              <Route path="photos" element={<Photos />} />
             </Route>
             <Route path="logout" element={<Logout setUser={setUser} />} />
           </Route>

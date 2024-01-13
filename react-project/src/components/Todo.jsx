@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../App.jsx"
+
+
 
 const Todo = ({ todo, setTodos, todos }) => {
+
+    const navigate = useNavigate();
+    const user = useContext(UserContext);
     const [copyTodo, setCopyTodo] = useState({ ...todo });
-    const [update, setUpdate] = useState(false);
+    const [editState, setEditState] = useState(false);
     const [checkboxClicked, setCheckboxClicked] = useState(false);
-    const [updateVClicked, setUpdateVClicked] = useState(false);
+    const [handleSubmit, sethandleSubmit] = useState(false);
 
 
     function handleChange(e) {
         const { name, value } = e.target;
-
         setCopyTodo((prev) => ({
             ...prev,
             [name]: value
@@ -22,9 +28,9 @@ const Todo = ({ todo, setTodos, todos }) => {
             ...copyTodo,
             "completed": checked
         });
-
         setCheckboxClicked((prev) => !prev);
     }
+
 
     useEffect(() => {
         const requestOptions = {
@@ -45,14 +51,12 @@ const Todo = ({ todo, setTodos, todos }) => {
                 updateTodos = [...todos];
                 updateTodos[i] = data;
                 setTodos(updateTodos);
-                setUpdate(false);
+                setEditState(false);
             })
             .catch((error) => {
                 console.error('There was an error!', error);
             });
-
-    }, [checkboxClicked, updateVClicked])
-
+    }, [checkboxClicked, handleSubmit])
 
 
     function deleteTodoClicked() {
@@ -77,6 +81,12 @@ const Todo = ({ todo, setTodos, todos }) => {
             .catch((error) => {
                 console.error('There was an error!', error);
             });
+        navigate(`/home/users/${user.id}/todos`);
+    }
+
+    function editTodoClicked() {
+        setEditState((prev) => !prev)
+        navigate(`/home/users/${user.id}/todos/${todo.id}`);
     }
 
     return (
@@ -88,19 +98,25 @@ const Todo = ({ todo, setTodos, todos }) => {
                 value={copyTodo.title}
                 name="title"
                 onChange={handleChange}
-                onClick={() => { setUpdate((prev) => !prev) }}
-
+                onDoubleClick={editTodoClicked}
+            //  disabled={!editState}
             />
             <button onClick={deleteTodoClicked}>🚽</button>
-            {update && <div><button onClick={() => {
-                setUpdateVClicked((prev) => !prev);
-                setUpdate((prev) => !prev)
-            }}>✔</button>
+            {editState && <div>
+
                 <button onClick={() => {
-                    setUpdate((prev) => !prev);
+                    navigate(`/home/users/${user.id}/todos`);
+                    setEditState(false);
+                    sethandleSubmit((prev) => !prev)
+                }}>✔</button>
+
+                <button onClick={() => {
+                    setEditState((prev) => !prev);
                     // setTodos(todos);
-                    
-                }}>✖</button></div>}
+                    navigate(`/home/users/${user.id}/todos`);
+                }}>✖</button>
+
+            </div>}
 
             <input
                 type="checkbox"

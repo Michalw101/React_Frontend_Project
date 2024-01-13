@@ -6,11 +6,10 @@ import { UserContext } from "../App.jsx"
 const Comment = ({ comment, setComments, comments }) => {
 
   const user = useContext(UserContext);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [copyComment, setCopyComment] = useState({ ...comment });
   const [editState, setEditState] = useState(false);
-  const [error, setError] = useState('');
 
 
   function handleChange(e) {
@@ -42,57 +41,46 @@ const Comment = ({ comment, setComments, comments }) => {
         updateComments = [...comments];
         updateComments[i] = data;
         setComments(updateComments);
-        setEditState((prev)=>!prev);
+        setEditState((prev) => !prev);
       })
       .catch((error) => {
         console.error('There was an error!', error);
       });
+    navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
+ }
 
-  }
   function editClicked() {
-    if (user.email === comment.email)
-    {
-      setEditState((prev) => !prev);
-      navigate(`/home/users/${user.id}/posts/${comment.postId}/comments/${comment.id}`);
-
-    }
-    else
-    setError("you cannot edit this comment :(")
+    setEditState((prev) => !prev);
+    navigate(`/home/users/${user.id}/posts/${comment.postId}/comments/${comment.id}`);
   }
-  function deleteClicked(){
-    if (user.email === comment.email){
-      const requestOptions = {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(copyComment)
-      };
-  
-      fetch(`http://localhost:3000/comments/${copyComment.id}`, requestOptions)
-        .then(() => {
-          let i, updateComments;
-          comments.map((c, index) => {
-            if (c.id === copyComment.id) {
-              i = index;
-            }
-            return c;
-          });
-          updateComments = [...comments]
-          updateComments.splice(i, 1);
-          setComments(updateComments);
-        })
-        .catch((error) => {
-          console.error('There was an error!', error);
+
+  function deleteClicked() {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(copyComment)
+    };
+
+    fetch(`http://localhost:3000/comments/${copyComment.id}`, requestOptions)
+      .then(() => {
+        let i, updateComments;
+        comments.map((c, index) => {
+          if (c.id === copyComment.id) {
+            i = index;
+          }
+          return c;
         });
-
-    }
-    else
-    setError("you cannot delete this comment :(")
-
+        updateComments = [...comments]
+        updateComments.splice(i, 1);
+        setComments(updateComments);
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
   }
 
   return (
     <>
-      <p style={{color:"red"}}>{error}</p>
       <div>
         <p>ID: {comment.id}</p>
         <h2>{comment.email}</h2>
@@ -118,14 +106,14 @@ const Comment = ({ comment, setComments, comments }) => {
           />
         </label>
         <hr />
-        <button onClick={editClicked}>Edit</button>
-        <button onClick={deleteClicked}>🚽</button>
 
+        {(user.email === comment.email) &&
+          <>{(!editState) && <button onClick={editClicked}>Edit</button>}
+           <button onClick={deleteClicked}>🚽</button></>}
 
         {editState && <><button onClick={handleSubmit}>Save comment</button>
           <button>Reset edits</button></>}
       </div>
-      {/* } */}
     </>)
 }
 
