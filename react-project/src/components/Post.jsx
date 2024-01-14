@@ -1,7 +1,7 @@
 import { useNavigate, Outlet } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import { UserContext } from "../App.jsx"
-
+import "../css/Posts.css"
 const Post = ({ post, setPosts, posts }) => {
 
   const user = useContext(UserContext);
@@ -80,7 +80,7 @@ const Post = ({ post, setPosts, posts }) => {
 
   return (
     <>
-      <div>
+      <div className='post'>
         <p>ID: {post.id}</p>
         <h2 onDoubleClick={() => {
           setFormPost((prev) => !prev),

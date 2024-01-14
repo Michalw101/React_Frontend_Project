@@ -74,39 +74,41 @@ const Albums = () => {
 
   return (
     <>
-      <h1>Albums</h1>
-      {returnMassege}
-      <div>
-        <label htmlFor="search">Search:</label>
-        <input
-          type="text"
-          id="search"
-          value={searchBy}
-          onChange={handleSearchChange}
-        />
-      </div>
-
-      {addAlbum ? (
-        <div>
-          <input
+      <div className='albums'>
+        <h1>Albums</h1>
+        {returnMassege}
+        <div className='search'>
+          <label htmlFor="search" >Search:</label>
+          <input className='todoInput'
             type="text"
-            value={newAlbum.title}
-            onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
-            placeholder="Album title"
+            id="search"
+            value={searchBy}
+            onChange={handleSearchChange}
           />
-          <button onClick={addAlbumClicked}>Add Album</button>
-          <button onClick={cancelAddAlbum}>Cancel</button>
         </div>
-      ) : (
-        <button onClick={() => setAddAlbum((prev) => !prev)}>➕</button>
-      )}
 
-      <ul>
-        {sortedAndFilteredAlbums().map((album) => (
-          <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
-       ))}
-      </ul>
-    </>)
+        <div id="allAlbums">
+          {sortedAndFilteredAlbums().map((album) => (
+            <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
+          ))}
+          {addAlbum ? (
+            <div className='album'>
+              <input className='albumInput'
+                type="text"
+                value={newAlbum.title}
+                onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
+                placeholder="Album title"
+              />
+              <button onClick={addAlbumClicked}>Add Album</button>
+              <button onClick={cancelAddAlbum}>Cancel</button>
+            </div>
+          ) : (
+            <button onClick={() => setAddAlbum((prev) => !prev)}>➕</button>
+          )}
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default Albums

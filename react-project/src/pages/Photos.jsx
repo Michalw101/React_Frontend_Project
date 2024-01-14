@@ -11,7 +11,7 @@ const Photos = () => {
   const [photosPerPage] = useState(5);
   const [visiblePhotos, setVisiblePhotos] = useState([]);
   const [addPhoto, setAddPhoto] = useState(false);
-  const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl:'' });
+  const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
 
   let { albumId } = useParams();
   albumId = parseInt(albumId, 10);
@@ -55,7 +55,7 @@ const Photos = () => {
     updateVisiblePhotos();
   };
 
-  
+
   const addPhotoClicked = () => {
 
     const requestOptions = {
@@ -69,63 +69,65 @@ const Photos = () => {
       .then(data => {
         setPhotos([...photos, data]);
         setAddPhoto(false);
-        setNewPhoto({ title: '', url: '', thumbnailUrl:'' });
+        setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
       })
       .catch(error => console.error('There was an error!', error));
   };
 
   const cancelAddPhoto = () => {
     setAddPhoto(false);
-    setNewPhoto({ title: '', url: '', thumbnailUrl:'' });
+    setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
   };
 
   return (
-    
-    <div>
-      <h2>Photos</h2>
+
+    <div className='photos'>
+      <h1>Photos</h1>
       {returnMassege}
+      <Link className="link" to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
 
-      {addPhoto ? (
-        <div>
-          <input
-            type="text"
-            value={newPhoto.title}
-            onChange={(e) => setNewPhoto({ ...newPhoto, title: e.target.value })}
-            placeholder="Photo title"
-          />
-          <input
-            type="text"
-            value={newPhoto.url}
-            onChange={(e) => setNewPhoto({ ...newPhoto, url: e.target.value })}
-            placeholder="Photo url"
-          />
-          <input
-            type="text"
-            value={newPhoto.thumbnailUrl}
-            onChange={(e) => setNewPhoto({ ...newPhoto, thumbnailUrl: e.target.value })}
-            placeholder="Photo thumbnailUrl"
-          />
-          <button onClick={addPhotoClicked}>Add Photo</button>
-          <button onClick={cancelAddPhoto}>Cancel</button>
-        </div>
-      ) : (
-        <button onClick={() => setAddPhoto((prev) => !prev)}>➕</button>
-      )}
-
-
-      <Link to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
-      <br/>
+      <div id='allPhotos'>
+        {visiblePhotos.map((photo) => (
+          <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />
+        ))}
+        {addPhoto ? (
+          <div className='photo'>
+            <input
+              className='photoInput'
+              type="text"
+              value={newPhoto.title}
+              onChange={(e) => setNewPhoto({ ...newPhoto, title: e.target.value })}
+              placeholder="Photo title"
+            />
+            <input
+              className='photoInput'
+              type="text"
+              value={newPhoto.url}
+              onChange={(e) => setNewPhoto({ ...newPhoto, url: e.target.value })}
+              placeholder="Photo url"
+            />
+            <input
+              className='photoInput'
+              type="text"
+              value={newPhoto.thumbnailUrl}
+              onChange={(e) => setNewPhoto({ ...newPhoto, thumbnailUrl: e.target.value })}
+              placeholder="Photo thumbnailUrl"
+            />
+            <button onClick={addPhotoClicked}>Add Photo</button>
+            <button onClick={cancelAddPhoto}>Cancel</button>
+          </div>
+        ) : (
+          <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>➕</button>
+        )}
+      </div>
+      <br />
       <button onClick={handlePrev} disabled={startIndex === 0}>
         ⬅️
       </button>
       <button onClick={handleNext} disabled={startIndex + photosPerPage >= photos.length}>
         ➡️
       </button>
-      {visiblePhotos.map((photo) => (
-        <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />
-      ))}
 
-     
     </div>
   );
 };

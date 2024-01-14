@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Todo from '../components/Todo.jsx';
+import "../css/todos.css"
 
 const Todos = () => {
   const user = useContext(UserContext);
@@ -89,11 +90,12 @@ const Todos = () => {
   };
 
   return (
-    <div>
+    <div className='todos'>
       <h1>Todos</h1>
       {returnMassege}
-      <div>
-        <label htmlFor="sort">Sort by:</label>
+
+      <div className='search'>
+        <label htmlFor="sort">Sort by: </label>
         <select id="sort"
           value={sortBy}
           onChange={handleSortChange}>
@@ -102,47 +104,48 @@ const Todos = () => {
           <option value="alphabetical">Alphabetical</option>
           <option value="random">Random</option>
         </select>
-      </div>
-
-      <div>
-        <label htmlFor="search">Search:</label>
+        <br />
+        <br />
+        <label htmlFor="search">Search: </label>
         <input
           type="text"
           id="search"
           value={searchBy}
           onChange={handleSearchChange}
         />
-        <input
-          type="checkbox"
-          checked={searchCheckbox}
-          name="searchCheckbox"
-          onChange={handleSearchCheckboxChange}
-        />
-        <label htmlFor="searchCheckbox">Completed</label>
+        <br />
+        <br />
+        <label htmlFor="searchCheckbox">Completed
+          <input id="checkbox"
+            type="checkbox"
+            checked={searchCheckbox}
+            name="searchCheckbox"
+            onChange={handleSearchCheckboxChange}
+          /></label>
       </div>
 
-      {addTodo ? (
-        <div>
-          <input
-            type="text"
-            value={newTodo.title}
-            onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
-            placeholder="Todo title"
-          />
-          <button onClick={addTodoClicked}>Add Todo</button>
-          <button onClick={cancelAddTodo}>Cancel</button>
-        </div>
-      ) : (
-        <button onClick={() => setAddTodo((prev) => !prev)}>➕</button>
-      )}
 
-      <ul>
+      <div id='allTodos'>
         {sortedAndFilteredTodos().map(
           (todo) => (
             todo.userId === user.id &&
             <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
           ))}
-      </ul>
+           {addTodo ? (
+          <div className='todo'>
+            <input className='todoInput'
+              type="text"
+              value={newTodo.title}
+              onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+              placeholder="Todo title"
+            />
+            <button onClick={addTodoClicked}>Save Todo</button>
+            <button onClick={cancelAddTodo}>Cancel</button>
+          </div>
+        ) : (
+          <button id="plus" onClick={() => setAddTodo((prev) => !prev)}>➕ Add Todo</button>
+        )}
+      </div>
     </div>
   )
 }

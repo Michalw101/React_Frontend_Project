@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import '../Info.css'
+import '../css/Info.css'
 import { UserContext } from "../App.jsx"
 
 

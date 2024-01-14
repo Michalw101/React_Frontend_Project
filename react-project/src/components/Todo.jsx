@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
-
+import "../css/todos.css"
 
 
 const Todo = ({ todo, setTodos, todos }) => {
@@ -90,18 +90,22 @@ const Todo = ({ todo, setTodos, todos }) => {
     }
 
     return (
-        <li>
-            {copyTodo.id}
-            <input
+        <div className='todo'>
+            <h4 id="todoId">{copyTodo.id}</h4>
+            <input className='input width'
                 type="text"
-                className='input'
                 value={copyTodo.title}
                 name="title"
                 onChange={handleChange}
                 onDoubleClick={editTodoClicked}
-            //  disabled={!editState}
             />
-            <button onClick={deleteTodoClicked}>🚽</button>
+
+            <input className='innerCheckbox'
+                type="checkbox"
+                checked={copyTodo.completed}
+                name="completed"
+                onChange={handleCheckboxChange}
+            />
             {editState && <div>
 
                 <button onClick={() => {
@@ -115,16 +119,10 @@ const Todo = ({ todo, setTodos, todos }) => {
                     // setTodos(todos);
                     navigate(`/home/users/${user.id}/todos`);
                 }}>✖</button>
-
             </div>}
+            <button onClick={deleteTodoClicked}>🚽</button>
+        </div>
 
-            <input
-                type="checkbox"
-                checked={copyTodo.completed}
-                name="completed"
-                onChange={handleCheckboxChange}
-            />
-        </li>
     );
 };
 export default Todo;

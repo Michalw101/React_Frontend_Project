@@ -1,0 +1,28 @@
+/* CSS מעודכן עבור רכיב הפוסטים */
+
+/* #postsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  } */
+  
+  #postTitles {
+    width: 30%; /* ניתן להתאים את הרוחב כפי שצריך */
+  }
+  
+  #selectedPost {
+    width: 65%; /* ניתן להתאים את הרוחב כפי שצריך */
+  }
+  
+.post
+{
+    width: 200px;
+    max-width: 380px;
+    direction: ltr;
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    margin:auto;
+    margin: 1rem;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
+import "../css/photos.css"
 
 const Photo = ({ photo, setPhotos, photos }) => {
 
@@ -83,29 +84,25 @@ const Photo = ({ photo, setPhotos, photos }) => {
     }
 
     return (
-        <div>
-            <p>ID: {photo.id}</p>
-            <label>photo title<input
+        <div className='photo'>
+            <h4>ID: {photo.id}</h4>
+            <label>photo title:<input
+                className='photoInput'
                 name="title"
                 disabled={!editState}
                 value={copyPhoto.title}
                 onChange={handleChange} />
             </label>
-            <label>photo url
+            <label>photo url:
                 <input
+                    className='photoInput'
                     name="url"
                     disabled={!editState}
                     value={copyPhoto.url}
                     onChange={handleChange} />
             </label>
-            <label>
-                <input
-                    name="thumbnailUrl"
-                    disabled={!editState}
-                    value={copyPhoto.thumbnailUrl}
-                    onChange={handleChange} />
-            </label>
-            <img src={photo.thumbnailUrl}></img>
+
+            <img src={copyPhoto.thumbnailUrl} />
 
             {(!editState) && <button onClick={editClicked}>Edit</button>}
             <button onClick={deleteClicked}>🚽</button>

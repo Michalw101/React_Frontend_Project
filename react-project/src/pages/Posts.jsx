@@ -73,7 +73,7 @@ const Posts = () => {
   };
 
   return (
-    <>
+    <div id="postsContainer">
       <h1>Posts</h1>
       {returnMassege}
       {addPost ? (
@@ -118,7 +118,7 @@ const Posts = () => {
           ))}
         </ul>
       </div>
-    </>
+    </div>
   )
 }
 
