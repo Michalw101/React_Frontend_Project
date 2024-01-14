@@ -20,7 +20,7 @@ const Comments = () => {
       .then(data => {
         setComments(data);
       })
-  }, []);
+  }, [postId]);
 
   if (!comments) {
     return <h1>Loading...</h1>

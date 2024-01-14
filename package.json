@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "react-lazyload": "^3.2.0",
+    "react-leaf-carousel": "^3.0.0",
     "react-router-dom": "^6.21.1",
     "react-router-use-history": "^1.1.0"
   }

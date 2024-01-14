@@ -79,6 +79,11 @@ const Comment = ({ comment, setComments, comments }) => {
       });
   }
 
+  function resetEdit(){
+    setEditState(false);
+    navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
+  }
+
   return (
     <>
       <div>
@@ -112,7 +117,7 @@ const Comment = ({ comment, setComments, comments }) => {
            <button onClick={deleteClicked}>🚽</button></>}
 
         {editState && <><button onClick={handleSubmit}>Save comment</button>
-          <button>Reset edits</button></>}
+          <button onClick={resetEdit}>Reset edits</button></>}
       </div>
     </>)
 }

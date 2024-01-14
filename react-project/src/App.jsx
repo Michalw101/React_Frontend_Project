@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import { createContext, useState, useEffect} from 'react';
+import { createContext, useState, useEffect } from 'react';
 import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
 import HomePage from './pages/HomePage'
@@ -45,11 +45,11 @@ function App() {
   );
 
   useEffect(() => {
-    if (!user) {
-      const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (user.id === "" && localStorage.getItem('currentUser')!=null) {
+      const storedUser = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem('currentUser'))));
       setUser(storedUser);
     }
-  }, [user])
+  }, [])
 
 
   return (
@@ -72,6 +72,8 @@ function App() {
             <Route path="users/:userId/albums" element={<Albums />} />
             <Route path="users/:userId/albums/:albumId" element={<Albums />} />
             <Route path="users/:userId/albums/:albumId/photos" element={<Photos />} />
+            <Route path="users/:userId/albums/:albumId/photos/:photoId" element={<Photos />} />
+
             <Route path="logout" element={<Logout setUser={setUser} />} />
           </Route>
         </Routes>

@@ -1,45 +1,21 @@
-// import React, { useState, useEffect } from 'react';
-// import { useParams, Link } from 'react-router-dom';
-// import Photo from '../components/Photo';
-
-// const Photos = () => {
-
-//     const [photos, setPhotos] = useState([]);
-//     let { albumId, userId } = useParams();
-//     userId = parseInt(userId, 10);
-//     albumId = parseInt(albumId, 10);
-
-//     useEffect(() => {
-//         fetch(`http://localhost:3000/photos?albumId=${albumId}`)
-//           .then(res => res.json())
-//           .then(data => {
-//             setPhotos(data);
-//           })
-//       }, []);
-
-//   return (
-//     <div>Photos
-//     <Link to={`/home/users/${userId}/albums/${albumId}`}>return to albums</Link >
-//       {photos.map((photo) => (
-//             <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />
-//           ))}
-//     </div>
-
-//   )
-// }
-// export default Photos;
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Photo from '../components/Photo';
-let returnMassege = "";
+import { UserContext } from "../App.jsx"
+
+
 const Photos = () => {
+  const user = useContext(UserContext);
   const [photos, setPhotos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [photosPerPage] = useState(5);
   const [visiblePhotos, setVisiblePhotos] = useState([]);
-  let { albumId, userId } = useParams();
-  userId = parseInt(userId, 10);
+  const [addPhoto, setAddPhoto] = useState(false);
+  const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl:'' });
+
+  let { albumId } = useParams();
   albumId = parseInt(albumId, 10);
+  let returnMassege = "";
 
   useEffect(() => {
     fetch(`http://localhost:3000/photos?albumId=${albumId}`)
@@ -66,7 +42,7 @@ const Photos = () => {
   };
 
   useEffect(() => {
-    updateVisiblePhotos(); // Call this when the component mounts to display the first 5 photos
+    updateVisiblePhotos();
   }, [startIndex, photos]);
 
   const handleNext = () => {
@@ -79,13 +55,65 @@ const Photos = () => {
     updateVisiblePhotos();
   };
 
+  
+  const addPhotoClicked = () => {
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...newPhoto, albumId: albumId })
+    };
+
+    fetch('http://localhost:3000/photos', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        setPhotos([...photos, data]);
+        setAddPhoto(false);
+        setNewPhoto({ title: '', url: '', thumbnailUrl:'' });
+      })
+      .catch(error => console.error('There was an error!', error));
+  };
+
+  const cancelAddPhoto = () => {
+    setAddPhoto(false);
+    setNewPhoto({ title: '', url: '', thumbnailUrl:'' });
+  };
+
   return (
     
     <div>
       <h2>Photos</h2>
       {returnMassege}
 
-      <Link to={`/home/users/${userId}/albums/${albumId}`}>Return to albums</Link>
+      {addPhoto ? (
+        <div>
+          <input
+            type="text"
+            value={newPhoto.title}
+            onChange={(e) => setNewPhoto({ ...newPhoto, title: e.target.value })}
+            placeholder="Photo title"
+          />
+          <input
+            type="text"
+            value={newPhoto.url}
+            onChange={(e) => setNewPhoto({ ...newPhoto, url: e.target.value })}
+            placeholder="Photo url"
+          />
+          <input
+            type="text"
+            value={newPhoto.thumbnailUrl}
+            onChange={(e) => setNewPhoto({ ...newPhoto, thumbnailUrl: e.target.value })}
+            placeholder="Photo thumbnailUrl"
+          />
+          <button onClick={addPhotoClicked}>Add Photo</button>
+          <button onClick={cancelAddPhoto}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setAddPhoto((prev) => !prev)}>➕</button>
+      )}
+
+
+      <Link to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
       <br/>
       <button onClick={handlePrev} disabled={startIndex === 0}>
         ⬅️

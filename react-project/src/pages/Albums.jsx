@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Link } from "react-router-dom"
 import { UserContext } from "../App.jsx"
 import Album from '../components/Album.jsx';
 import '../App.css'
+
 const Albums = () => {
 
   const user = useContext(UserContext);
@@ -12,13 +12,14 @@ const Albums = () => {
   const [newAlbum, setNewAlbum] = useState({ title: '', id: '' });
   let filteredAlbums = albums;
   let returnMassege = "";
+
   useEffect(() => {
     fetch(`http://localhost:3000/albums/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setAlbums(data);
       })
-  }, []);
+  }, [user.id]);
 
 
   if (!albums) {
