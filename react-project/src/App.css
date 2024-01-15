@@ -90,9 +90,7 @@
 .text {
   text-align: center;
 }
-.link:hover{
-  color: #fa5fcc;
-}
+
 .link {
   color:  #000000;
   text-decoration: none;

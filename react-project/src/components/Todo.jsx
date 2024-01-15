@@ -92,37 +92,44 @@ const Todo = ({ todo, setTodos, todos }) => {
     return (
         <div className='todo'>
             <h4 id="todoId">{copyTodo.id}</h4>
-            <input className='input width'
+            <input
+                className='input width'
                 type="text"
                 value={copyTodo.title}
                 name="title"
                 onChange={handleChange}
                 onDoubleClick={editTodoClicked}
             />
-
-            <input className='innerCheckbox'
+            <input
+                className='innerCheckbox'
                 type="checkbox"
                 checked={copyTodo.completed}
                 name="completed"
                 onChange={handleCheckboxChange}
             />
-            {editState && <div>
-
-                <button onClick={() => {
-                    navigate(`/home/users/${user.id}/todos`);
-                    setEditState(false);
-                    sethandleSubmit((prev) => !prev)
-                }}>✔</button>
-
-                <button onClick={() => {
-                    setEditState((prev) => !prev);
-                    // setTodos(todos);
-                    navigate(`/home/users/${user.id}/todos`);
-                }}>✖</button>
-            </div>}
-            <button onClick={deleteTodoClicked}>🚽</button>
+            {editState && (
+                <div className='buttons-container'>
+                    <button
+                        onClick={() => {
+                            navigate(`/home/users/${user.id}/todos`);
+                            setEditState(false);
+                            sethandleSubmit((prev) => !prev);
+                        }}
+                    >
+                        ✔
+                    </button>
+                    <button
+                        onClick={() => {
+                            setEditState((prev) => !prev);
+                            navigate(`/home/users/${user.id}/todos`);
+                        }}
+                    >
+                        ✖
+                    </button>
+                </div>
+            )}
+            <button className="delete" onClick={deleteTodoClicked}>Delete</button>
         </div>
-
     );
 };
 export default Todo;

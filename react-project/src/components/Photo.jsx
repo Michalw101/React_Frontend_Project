@@ -104,11 +104,11 @@ const Photo = ({ photo, setPhotos, photos }) => {
 
             <img src={copyPhoto.thumbnailUrl} />
 
-            {(!editState) && <button onClick={editClicked}>Edit</button>}
-            <button onClick={deleteClicked}>🚽</button>
+            {(!editState) && <button className='delete' onClick={editClicked}>Edit</button>}
+            <button className='delete' onClick={deleteClicked}>Delete</button>
 
-            {editState && <><button onClick={handleSubmit}>Save photo</button>
-                <button onClick={resetEdit}>Reset edits</button></>}
+            {editState && <><button className='delete' onClick={handleSubmit}>Save photo</button>
+                <button className='delete' onClick={resetEdit}>Reset edits</button></>}
         </div>
     )
 }

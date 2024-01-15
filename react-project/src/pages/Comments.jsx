@@ -56,15 +56,15 @@ const Comments = () => {
     <>
     {returnMassege}
       {addComment ? (
-        <div>
-          <input
+        <div className='comment'>
+          <input className='postInput'
             type="text"
             value={newComment.name}
             onChange={(e) => setNewComment({ ...newComment, name: e.target.value })}
             placeholder="comment name"
           />
           <textarea
-            name="body"
+            name="body" className='postInput'
             value={newComment.body}
             onChange={(e) => setNewComment({ ...newComment, body: e.target.value })}
             rows={6}
@@ -74,7 +74,7 @@ const Comments = () => {
           <button onClick={cancelAddComment}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => setAddComment((prev) => !prev)}>➕ COMMENT</button>
+        <button onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>
       )}
 
 

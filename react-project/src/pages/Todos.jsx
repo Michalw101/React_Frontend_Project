@@ -96,7 +96,8 @@ const Todos = () => {
 
       <div className='search'>
         <label htmlFor="sort">Sort by: </label>
-        <select id="sort"
+        <select
+          id="sort"
           value={sortBy}
           onChange={handleSortChange}>
           <option value="sequential">Sequential</option>
@@ -115,39 +116,45 @@ const Todos = () => {
         />
         <br />
         <br />
-        <label htmlFor="searchCheckbox">Completed
-          <input id="checkbox"
+        <label htmlFor="searchCheckbox">
+          Completed
+          <input
+            id="checkbox"
             type="checkbox"
             checked={searchCheckbox}
             name="searchCheckbox"
             onChange={handleSearchCheckboxChange}
-          /></label>
-      </div>
+          />
+        </label></div>
+      {addTodo ? (
+        <div className='addTodo'>
+          <input
+            className='todoInput'
+            type="text"
+            value={newTodo.title}
+            onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+            placeholder="Todo title"
+          />
+          <button onClick={addTodoClicked}>Save Todo</button>
+          <button onClick={cancelAddTodo}>Cancel</button>
+        </div>
+      ) : (
+        <button id="plus" onClick={() => setAddTodo((prev) => !prev)}>
+          ➕ Add Todo
+        </button>
+      )}
 
 
       <div id='allTodos'>
-        {sortedAndFilteredTodos().map(
-          (todo) => (
-            todo.userId === user.id &&
+        {sortedAndFilteredTodos().map((todo) => (
+          todo.userId === user.id && (
             <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
-          ))}
-           {addTodo ? (
-          <div className='todo'>
-            <input className='todoInput'
-              type="text"
-              value={newTodo.title}
-              onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
-              placeholder="Todo title"
-            />
-            <button onClick={addTodoClicked}>Save Todo</button>
-            <button onClick={cancelAddTodo}>Cancel</button>
-          </div>
-        ) : (
-          <button id="plus" onClick={() => setAddTodo((prev) => !prev)}>➕ Add Todo</button>
-        )}
+          )
+        ))}
+
       </div>
     </div>
-  )
+  );
 }
 
 export default Todos;

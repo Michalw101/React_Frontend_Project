@@ -73,37 +73,38 @@ const Posts = () => {
   };
 
   return (
-    <div id="postsContainer">
+    <div className='posts'>
       <h1>Posts</h1>
       {returnMassege}
       {addPost ? (
-        <div>
-          <input
+        <div className='addPost'>
+          <input className='postInput'
             type="text"
             value={newPost.title}
             onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
             placeholder="Post title"
-          />
-          <input
+          /><br/>
+          <input  className='postInput'
             type="text"
             value={newPost.body}
             onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
             placeholder="Post body"
-          />
+          /><br/>
           <button onClick={addPostClicked}>Add Post</button>
           <button onClick={cancelAddPost}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => setAddPost((prev) => !prev)}>➕</button>
+        <button id="plus" onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
+      )}
+      {showAllPosts ? (
+        <button id="plus" onClick={() => setShowAllPosts(false)}>show my posts</button>
+      ) : (
+        <button id="plus" onClick={() => setShowAllPosts(true)}>show all posts</button>
       )}
       <div>
-        {showAllPosts ? (
-          <button onClick={() => setShowAllPosts(false)}>show my posts</button>
-        ) : (
-          <button onClick={() => setShowAllPosts(true)}>show all posts</button>
-        )}
-        <div>
-          <label htmlFor="search">Search:</label>
+
+        <div className='search'>
+          <label htmlFor="search">Search: </label>
           <input
             type="text"
             id="search"

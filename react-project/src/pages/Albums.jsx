@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Album from '../components/Album.jsx';
-import '../App.css'
+import "../css/Album.css"
 
 const Albums = () => {
 
@@ -23,8 +23,9 @@ const Albums = () => {
 
 
   if (!albums) {
-    return <img src="/images/load.gif" alt="Loading..." />;
-  }
+  //   return <img src="/images/load.gif" alt="Loading..." />;
+  return <h1>Loading...</h1>  
+}
 
   if (albums.length === 0) {
     returnMassege = <h1>No albums found.</h1>
@@ -77,34 +78,35 @@ const Albums = () => {
       <div className='albums'>
         <h1>Albums</h1>
         {returnMassege}
+
         <div className='search'>
-          <label htmlFor="search" >Search:</label>
-          <input className='todoInput'
+          <label htmlFor="search" >Search: </label>
+          <input
             type="text"
             id="search"
             value={searchBy}
             onChange={handleSearchChange}
           />
         </div>
-
-        <div id="allAlbums">
-          {sortedAndFilteredAlbums().map((album) => (
-            <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
-          ))}
-          {addAlbum ? (
-            <div className='album'>
+        {addAlbum ? (
+            <div className='addAlbum'>
               <input className='albumInput'
                 type="text"
                 value={newAlbum.title}
                 onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
                 placeholder="Album title"
-              />
-              <button onClick={addAlbumClicked}>Add Album</button>
-              <button onClick={cancelAddAlbum}>Cancel</button>
+              /><br/>
+              <button className='btnAlbum' onClick={addAlbumClicked}>Add Album</button>
+              <button className='btnAlbum' onClick={cancelAddAlbum}>Cancel</button>
             </div>
           ) : (
-            <button onClick={() => setAddAlbum((prev) => !prev)}>➕</button>
+            <button id="plus" onClick={() => setAddAlbum((prev) => !prev)}>➕ Add Album</button>
           )}
+
+        <div id="allAlbums">
+          {sortedAndFilteredAlbums().map((album) => (
+            <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
+          ))}
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
-
+import "../css/Comment.css"
 
 const Comment = ({ comment, setComments, comments }) => {
 
@@ -86,22 +86,18 @@ const Comment = ({ comment, setComments, comments }) => {
 
   return (
     <>
-      <div>
-        <p>ID: {comment.id}</p>
-        <h2>{comment.email}</h2>
-      </div>
-      <div >
+      <div className='comment'>
+        <p>{comment.id}. {comment.email}</p>
         <label>
           Comment title:
-          <input
+          <input className='commentInput'
             name="name"
             disabled={!editState}
             value={copyComment.name}
             onChange={handleChange} />
         </label>
-        <br />
         <label>
-          <textarea
+          <textarea className='commentInput'
             name="body"
             disabled={!editState}
             value={copyComment.body}
@@ -114,7 +110,7 @@ const Comment = ({ comment, setComments, comments }) => {
 
         {(user.email === comment.email) &&
           <>{(!editState) && <button onClick={editClicked}>Edit</button>}
-           <button onClick={deleteClicked}>🚽</button></>}
+           <button onClick={deleteClicked}>Delete</button></>}
 
         {editState && <><button onClick={handleSubmit}>Save comment</button>
           <button onClick={resetEdit}>Reset edits</button></>}

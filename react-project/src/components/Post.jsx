@@ -73,7 +73,7 @@ const Post = ({ post, setPosts, posts }) => {
     navigate(`/home/users/${user.id}/posts`);
   }
 
-  function resetEdit(){
+  function resetEdit() {
     navigate(`/home/users/${user.id}/posts`);
     setEditState(false);
   }
@@ -81,33 +81,20 @@ const Post = ({ post, setPosts, posts }) => {
   return (
     <>
       <div className='post'>
-        <p>ID: {post.id}</p>
-        <h2 onDoubleClick={() => {
+        <p onDoubleClick={() => {
           setFormPost((prev) => !prev),
             setEditState(false);
           navigate(`/home/users/${user.id}/posts/${post.id}`);
-        }}>{post.title}</h2>
-        {(user.id == post.userId) && <button onClick={deletePostClicked}>🚽</button>}
-        <button onClick={() => {
-          navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
-            setViewComment((prev) => !prev)
-        }}>🍾</button>
-      </div>
-      {viewComments && <Outlet />}
-      {formPost && <div className='postDetails'>
-        <h2>{copyPost.id}</h2><br />
+        }}>{post.id}. {post.title}</p>
 
-        <label>
-          Post title:
-          <input
+      </div>
+      {formPost && <div className='postDetails'>
+          <input className='postInput'
             name="title"
             disabled={!editState}
             value={copyPost.title}
             onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          <textarea
+          <textarea className='postInput'
             name="body"
             disabled={!editState}
             value={copyPost.body}
@@ -115,13 +102,17 @@ const Post = ({ post, setPosts, posts }) => {
             rows={6}
             cols={50}
           />
-        </label>
-
         <hr />
-        {(user.id == post.userId) && !editState && <button onClick={()=> setEditState(true)}>Edit</button>}
+        {(user.id == post.userId) && !editState && <button onClick={() => setEditState(true)}>Edit</button>}
         {editState && <><button onClick={handleSubmit}>Save Post</button>
           <button onClick={resetEdit}>Reset edits</button></>}
+        {(user.id == post.userId) && <button onClick={deletePostClicked}>Delete</button>}
+        <button onClick={() => {
+          navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
+            setViewComment((prev) => !prev)
+        }}>view comments</button>
       </div>}
+      {viewComments && <Outlet />}
     </>
   );
 };
