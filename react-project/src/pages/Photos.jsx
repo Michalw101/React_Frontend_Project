@@ -95,15 +95,12 @@ const Photos = () => {
           <button onClick={cancelAddPhoto}>Cancel</button>
         </div>
       ) : (
-        <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>ג• Add Photo</button>
+        <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>➕ Add Photo</button>
       )}
       <br />
       <button className="more" onClick={funcGetPhotos}>
-        טען עוד
+      Load more
       </button>
-      {/* <button className="more" onClick={handleNext} disabled={startIndex + photosPerPage >= photos.length}>
-        ג¡ן¸
-      </button> */}
       <div id='allPhotos'>
         {photos.map((photo) => (
           <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />

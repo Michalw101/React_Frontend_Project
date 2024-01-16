@@ -61,7 +61,7 @@ const Comments = () => {
             type="text"
             value={newComment.name}
             onChange={(e) => setNewComment({ ...newComment, name: e.target.value })}
-            placeholder="comment name"
+            placeholder="comment's name"
           />
           <textarea
             name="body" className='postInput'
@@ -69,7 +69,9 @@ const Comments = () => {
             onChange={(e) => setNewComment({ ...newComment, body: e.target.value })}
             rows={6}
             cols={50}
+            placeholder="comment's body"
           />
+          <br/>
           <button className='btn' onClick={addCommentClicked}>Add</button>
           <button className='btn' onClick={cancelAddComment}>Cancel</button>
         </div>
