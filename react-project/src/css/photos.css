@@ -9,6 +9,7 @@
 .buttons-container {
     display: flex;
     gap: 0.5rem;
+    
 }
 
 .buttons-container button {
@@ -16,13 +17,14 @@
     cursor: pointer;
     border: none;
     border-radius: 4px;
+   
 }
 
-.search, .addPhoto {
+.search, .addPhoto, .return {
     width: 300px;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
     flex: 1; 
     margin-left: auto;
     margin-right: auto;
@@ -31,10 +33,10 @@
 
 .photo {
     width: 100%;
-    max-width: 250px;
+    max-width: 330px;
     margin: 1rem;
     padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -59,6 +61,7 @@
 {
     width: 100%;
     margin-bottom: 1em;
+    height: 20px;
 }
 
 .more
@@ -70,4 +73,5 @@
     border-radius: 4px;
     margin-left: auto;
     margin-right: auto;
+    /* padding: 4px; */
 }

@@ -45,12 +45,11 @@ function App() {
   );
 
   useEffect(() => {
-    if (user.id === "" && localStorage.getItem('currentUser')!=null) {
+    if (user.id === "" && localStorage.getItem('currentUser') != null) {
       const storedUser = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem('currentUser'))));
       setUser(storedUser);
     }
   }, [])
-
 
   return (
     <UserContext.Provider value={user}>
@@ -59,7 +58,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LogIn setUser={setUser} />} />
           <Route path="/register" element={<SignUp setUser={setUser} />} />
-          <Route path="/userdetails" element={<UserDetails setUser={setUser} />} />
+          <Route path="/user-details" element={<UserDetails setUser={setUser} />} />
           <Route path="/home" element={<HomePage />}>
             <Route path="users/:userId/info" element={<Info />} />
             <Route path="users/:userId/todos" element={<Todos />} />

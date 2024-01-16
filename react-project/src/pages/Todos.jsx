@@ -2,10 +2,12 @@ import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Todo from '../components/Todo.jsx';
 import "../css/todos.css"
+import MyImage from '../images/Loading.gif';
+
 
 const Todos = () => {
   const user = useContext(UserContext);
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(null);
   const [sortBy, setSortBy] = useState('sequential');
   const [searchBy, setSearchBy] = useState('');
   const [addTodo, setAddTodo] = useState(false);
@@ -21,7 +23,7 @@ const Todos = () => {
   }, [user.id]);
 
   if (!todos) {
-    return <h1>Loading...</h1>
+    return <img src={MyImage} />;
   }
 
   if (todos.length === 0) {
@@ -42,7 +44,7 @@ const Todos = () => {
   };
 
   const sortedAndFilteredTodos = () => {
-    let filteredTodos = todos;
+    let filteredTodos;
 
     if (searchBy != null) {
       filteredTodos = todos.filter(todo =>
@@ -93,7 +95,6 @@ const Todos = () => {
     <div className='todos'>
       <h1>Todos</h1>
       {returnMassege}
-
       <div className='search'>
         <label htmlFor="sort">Sort by: </label>
         <select
@@ -135,8 +136,8 @@ const Todos = () => {
             onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
             placeholder="Todo title"
           />
-          <button onClick={addTodoClicked}>Save Todo</button>
-          <button onClick={cancelAddTodo}>Cancel</button>
+          <button className="btn" onClick={addTodoClicked}>Save Todo</button>
+          <button className="btn" onClick={cancelAddTodo}>Cancel</button>
         </div>
       ) : (
         <button id="plus" onClick={() => setAddTodo((prev) => !prev)}>

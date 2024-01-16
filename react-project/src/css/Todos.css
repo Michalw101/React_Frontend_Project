@@ -16,6 +16,8 @@ h1{
 .buttons-container {
     display: flex;
     gap: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 .buttons-container button {
@@ -25,13 +27,15 @@ h1{
     border-radius: 4px;
     margin: 4px ;
     background-color: #fa5fcc;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 .search, .addTodo {
     width: 300px;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0,  0.5);
     flex: 1; 
     margin-left: auto;
     margin-right: auto;
@@ -40,11 +44,13 @@ h1{
 
 .delete
 {
+    border-color: rgb(105, 93, 93);
+    border-style: groove;
     width: 100%;
     margin-top: 6px;
 }
 
-#plus, .link {
+#plus {
     margin: 1rem;
     padding: 0.5rem;
     cursor: pointer;
@@ -58,9 +64,10 @@ h1{
 .todo {
     width: 100%;
     max-width: 250px;
-    margin: 1rem;
+    /* margin: 1rem; */
+    margin-right: 0px;
     padding: 1rem; /* הוסף padding */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -71,9 +78,10 @@ h1{
 
 #allTodos {
     display: grid;
-    grid-template-columns: repeat(4, minmax(250px, 1fr));
+    grid-template-columns: repeat(5, minmax(250px, 0.5fr));
     gap: 1em;
     margin: 35px;
+    margin-left: 90px;
 }
 
 .todos {
@@ -85,6 +93,6 @@ h1{
 
 .todoInput
 {
-    width: 100%;
+    width: 80%;
     margin-bottom: 1em;
 }

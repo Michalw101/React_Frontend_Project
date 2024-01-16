@@ -7,9 +7,7 @@ import "../css/Photos.css"
 const Photos = () => {
   const user = useContext(UserContext);
   const [photos, setPhotos] = useState([]);
-  const [startIndex, setStartIndex] = useState(0);
-  const [photosPerPage] = useState(5);
-  const [visiblePhotos, setVisiblePhotos] = useState([]);
+  const [photosPerPage,setPhotosPerPage ]= useState(1);
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
 
@@ -18,14 +16,17 @@ const Photos = () => {
   let returnMassege = "";
 
   useEffect(() => {
-    fetch(`http://localhost:3000/photos?albumId=${albumId}`)
-      .then(res => res.json())
-      .then(data => {
-        setPhotos(data);
-        updateVisiblePhotos();
-      });
+    funcGetPhotos();
   }, [albumId]);
 
+  const funcGetPhotos =(()=>{
+    fetch(`http://localhost:3000/photos?albumId=${albumId}&_page=${photosPerPage}&_limit=4`)
+    .then(res => res.json())
+    .then(data => {
+      setPhotos([...photos , ...data]);
+      setPhotosPerPage((prev)=>(prev+1));
+    });
+  })
   if (!photos) {
     return <h1>Loading...</h1>
   }
@@ -35,25 +36,6 @@ const Photos = () => {
   }
 
 
-  const updateVisiblePhotos = () => {
-    const endIndex = startIndex + photosPerPage;
-    const slicedPhotos = photos.slice(startIndex, endIndex);
-    setVisiblePhotos(slicedPhotos);
-  };
-
-  useEffect(() => {
-    updateVisiblePhotos();
-  }, [startIndex, photos]);
-
-  const handleNext = () => {
-    setStartIndex(startIndex + photosPerPage);
-    updateVisiblePhotos();
-  };
-
-  const handlePrev = () => {
-    setStartIndex(Math.max(startIndex - photosPerPage, 0));
-    updateVisiblePhotos();
-  };
 
 
   const addPhotoClicked = () => {
@@ -67,7 +49,7 @@ const Photos = () => {
     fetch('http://localhost:3000/photos', requestOptions)
       .then(response => response.json())
       .then(data => {
-        setPhotos([...photos, data]);
+        // setPhotos([...photos, data]);
         setAddPhoto(false);
         setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
       })
@@ -82,9 +64,9 @@ const Photos = () => {
   return (
 
     <div className='photos'>
-      <h1>Photos</h1>
+      <h1>Photos of album number {albumId}</h1>
       {returnMassege}
-      <Link className="link" to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
+      <Link className="return" to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
 
       {addPhoto ? (
         <div className='addPhoto'>
@@ -113,17 +95,17 @@ const Photos = () => {
           <button onClick={cancelAddPhoto}>Cancel</button>
         </div>
       ) : (
-        <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>➕ Add Photo</button>
+        <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>ג• Add Photo</button>
       )}
       <br />
-      <button className="more" onClick={handlePrev} disabled={startIndex === 0}>
-        ⬅️
+      <button className="more" onClick={funcGetPhotos}>
+        טען עוד
       </button>
-      <button className="more" onClick={handleNext} disabled={startIndex + photosPerPage >= photos.length}>
-        ➡️
-      </button>
+      {/* <button className="more" onClick={handleNext} disabled={startIndex + photosPerPage >= photos.length}>
+        ג¡ן¸
+      </button> */}
       <div id='allPhotos'>
-        {visiblePhotos.map((photo) => (
+        {photos.map((photo) => (
           <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />
         ))}
 

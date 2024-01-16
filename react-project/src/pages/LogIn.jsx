@@ -21,7 +21,9 @@ function LogIn({setUser}) {
                 if (user  && user.website == password) {
                     setLoginError("");
                     localStorage.setItem("currentUser", user.id);
-                    localStorage.setItem(user.id, JSON.stringify(user));
+                    const detailsOfUserWithoutWebsite = { ...user };
+                    delete detailsOfUserWithoutWebsite.website;
+                    localStorage.setItem(user.id, JSON.stringify(detailsOfUserWithoutWebsite));
                     setUser(user);
                     navigate('/home');   
                 }

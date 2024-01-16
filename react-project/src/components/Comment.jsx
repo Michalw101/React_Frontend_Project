@@ -31,16 +31,7 @@ const Comment = ({ comment, setComments, comments }) => {
     fetch(`http://localhost:3000/comments/${copyComment.id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        let i, updateComments;
-        comments.map((c, index) => {
-          if (c.id === data.id) {
-            i = index;
-          }
-          return c;
-        });
-        updateComments = [...comments];
-        updateComments[i] = data;
-        setComments(updateComments);
+        setComments(comments.map(currentComment => comment.id == currentComment.id ? data : currentComment));
         setEditState((prev) => !prev);
       })
       .catch((error) => {
@@ -58,21 +49,12 @@ const Comment = ({ comment, setComments, comments }) => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(copyComment)
+      body: JSON.stringify(comment)
     };
 
-    fetch(`http://localhost:3000/comments/${copyComment.id}`, requestOptions)
+    fetch(`http://localhost:3000/comments/${comment.id}`, requestOptions)
       .then(() => {
-        let i, updateComments;
-        comments.map((c, index) => {
-          if (c.id === copyComment.id) {
-            i = index;
-          }
-          return c;
-        });
-        updateComments = [...comments]
-        updateComments.splice(i, 1);
-        setComments(updateComments);
+        setComments(comments.filter(currentComment => currentComment.id !== comment.id));
       })
       .catch((error) => {
         console.error('There was an error!', error);
@@ -109,11 +91,11 @@ const Comment = ({ comment, setComments, comments }) => {
         <hr />
 
         {(user.email === comment.email) &&
-          <>{(!editState) && <button onClick={editClicked}>Edit</button>}
-           <button onClick={deleteClicked}>Delete</button></>}
+          <>{(!editState) && <button  className="btn" onClick={editClicked}>Edit</button>}
+           <button className="btn" onClick={deleteClicked}>Delete</button></>}
 
-        {editState && <><button onClick={handleSubmit}>Save comment</button>
-          <button onClick={resetEdit}>Reset edits</button></>}
+        {editState && <><button  className="btn" onClick={handleSubmit}>Save comment</button>
+          <button  className="btn"  onClick={resetEdit}>Reset edits</button></>}
       </div>
     </>)
 }

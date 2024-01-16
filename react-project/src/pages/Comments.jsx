@@ -70,20 +70,20 @@ const Comments = () => {
             rows={6}
             cols={50}
           />
-          <button onClick={addCommentClicked}>Add Comment</button>
-          <button onClick={cancelAddComment}>Cancel</button>
+          <button className='btn' onClick={addCommentClicked}>Add</button>
+          <button className='btn' onClick={cancelAddComment}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>
+        <button className='btn' onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>
       )}
 
 
-      <ul>
+      <div>
         {comments.map(
           (comment) => (
             <Comment key={comment.id} comment={comment} setComments={setComments} comments={comments} />
           ))}
-      </ul>
+      </div>
     </>
 
   )

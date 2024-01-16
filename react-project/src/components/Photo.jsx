@@ -24,21 +24,12 @@ const Photo = ({ photo, setPhotos, photos }) => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(copyPhoto)
+            body: JSON.stringify(photo)
         };
-        fetch(`http://localhost:3000/photos/${copyPhoto.id}`, requestOptions)
+        fetch(`http://localhost:3000/photos/${photo.id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                let i, updatePhotos;
-                photos.map((p, index) => {
-                    if (p.id === data.id) {
-                        i = index;
-                    }
-                    return p;
-                });
-                updatePhotos = [...photos];
-                updatePhotos[i] = data;
-                setPhotos(updatePhotos);
+                setPhotos(photos.map(currentPhoto => photo.id == currentPhoto.id ? data : currentPhoto));
                 setEditState((prev) => !prev);
             })
             .catch((error) => {
@@ -62,16 +53,7 @@ const Photo = ({ photo, setPhotos, photos }) => {
 
         fetch(`http://localhost:3000/photos/${copyPhoto.id}`, requestOptions)
             .then(() => {
-                let i, updatePhotos;
-                photos.map((p, index) => {
-                    if (p.id === copyPhoto.id) {
-                        i = index;
-                    }
-                    return p;
-                });
-                updatePhotos = [...photos]
-                updatePhotos.splice(i, 1);
-                setPhotos(updatePhotos);
+                setPhotos(photos.filter(currentPhotos => currentPhotos.id !== photo.id));
             })
             .catch((error) => {
                 console.error('There was an error!', error);
@@ -85,22 +67,20 @@ const Photo = ({ photo, setPhotos, photos }) => {
 
     return (
         <div className='photo'>
-            <h4>ID: {photo.id}</h4>
-            <label>photo title:<input
+            <p>{photo.id}.<input
                 className='photoInput'
                 name="title"
                 disabled={!editState}
                 value={copyPhoto.title}
                 onChange={handleChange} />
-            </label>
-            <label>photo url:
-                <input
-                    className='photoInput'
-                    name="url"
-                    disabled={!editState}
-                    value={copyPhoto.url}
-                    onChange={handleChange} />
-            </label>
+                <label>photo url:
+                    <input
+                        className='photoInput'
+                        name="url"
+                        disabled={!editState}
+                        value={copyPhoto.url}
+                        onChange={handleChange} />
+                </label></p>
 
             <img src={copyPhoto.thumbnailUrl} />
 

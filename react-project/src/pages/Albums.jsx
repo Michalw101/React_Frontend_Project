@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Album from '../components/Album.jsx';
 import "../css/Album.css"
+import MyImage from '../images/Loading.gif';
+
 
 const Albums = () => {
 
@@ -14,17 +16,18 @@ const Albums = () => {
   let returnMassege = "";
 
   useEffect(() => {
-    fetch(`http://localhost:3000/albums/?userId=${user.id}`)
+    if(user.id){
+      fetch(`http://localhost:3000/albums/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setAlbums(data);
       })
+    }
   }, [user.id]);
 
 
   if (!albums) {
-  //   return <img src="/images/load.gif" alt="Loading..." />;
-  return <h1>Loading...</h1>  
+  return <img src={MyImage} />;
 }
 
   if (albums.length === 0) {
@@ -96,8 +99,8 @@ const Albums = () => {
                 onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
                 placeholder="Album title"
               /><br/>
-              <button className='btnAlbum' onClick={addAlbumClicked}>Add Album</button>
-              <button className='btnAlbum' onClick={cancelAddAlbum}>Cancel</button>
+              <button  className='btnAlbum btn' onClick={addAlbumClicked}>Add Album</button>
+              <button className='btnAlbum btn' onClick={cancelAddAlbum}>Cancel</button>
             </div>
           ) : (
             <button id="plus" onClick={() => setAddAlbum((prev) => !prev)}>➕ Add Album</button>

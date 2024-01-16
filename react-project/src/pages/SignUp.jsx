@@ -37,7 +37,7 @@ function SignUp({ setUser }) {
                         "username": userName,
                         "website": password
                     }));
-                    navigate(`/userdetails?userName=${userName}`);
+                    navigate(`/user-details?userName=${userName}`);
                 }
             });
 

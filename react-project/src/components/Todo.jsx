@@ -10,9 +10,6 @@ const Todo = ({ todo, setTodos, todos }) => {
     const user = useContext(UserContext);
     const [copyTodo, setCopyTodo] = useState({ ...todo });
     const [editState, setEditState] = useState(false);
-    const [checkboxClicked, setCheckboxClicked] = useState(false);
-    const [handleSubmit, sethandleSubmit] = useState(false);
-
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -24,40 +21,41 @@ const Todo = ({ todo, setTodos, todos }) => {
 
     function handleCheckboxChange(e) {
         const { checked } = e.target;
-        setCopyTodo({
-            ...copyTodo,
-            "completed": checked
-        });
-        setCheckboxClicked((prev) => !prev);
-    }
-
-
-    useEffect(() => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(copyTodo)
+            body: JSON.stringify({...copyTodo, completed: checked})
         };
+        updateTodos(requestOptions);
+        setCopyTodo({
+            ...copyTodo,
+            completed: checked
+        });
+    }
+
+    const updateTodos = (requestOptions) =>{
         fetch(`http://localhost:3000/todos/${copyTodo.id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                let i, updateTodos;
-                todos.map((t, index) => {
-                    if (t.id === data.id) {
-                        i = index;
-                    }
-                    return t;
-                });
-                updateTodos = [...todos];
-                updateTodos[i] = data;
-                setTodos(updateTodos);
+                setTodos(todos.map(currentTodo => todo.id == currentTodo.id ? data : currentTodo));
                 setEditState(false);
             })
             .catch((error) => {
                 console.error('There was an error!', error);
             });
-    }, [checkboxClicked, handleSubmit])
+    }
 
+    const handleSubmit=()=>
+    {
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(copyTodo)
+        };
+        updateTodos(requestOptions);
+        navigate(`/home/users/${user.id}/todos`);
+        setEditState(false);
+    }
 
     function deleteTodoClicked() {
         const requestOptions = {
@@ -110,11 +108,7 @@ const Todo = ({ todo, setTodos, todos }) => {
             {editState && (
                 <div className='buttons-container'>
                     <button
-                        onClick={() => {
-                            navigate(`/home/users/${user.id}/todos`);
-                            setEditState(false);
-                            sethandleSubmit((prev) => !prev);
-                        }}
+                        onClick={handleSubmit}
                     >
                         ✔
                     </button>

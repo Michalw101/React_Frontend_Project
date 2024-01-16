@@ -5,20 +5,20 @@
   height: 100%;
 
 }
- .body{
+
+.body {
   height: 100%;
-  width:100%;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   /* background-image: url("images/8.jpg");
   background-repeat: no-repeat;
   background-position: left;
   background-size: cover;  */
 }
 
-.logout
-{
+.logout {
   width: 380px;
   max-width: 380px;
   padding: 1rem;
@@ -28,7 +28,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
-  margin-bottom:auto;
+  margin-bottom: auto;
 }
 
 .registration {
@@ -41,7 +41,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
-  margin-bottom:auto;
+  margin-bottom: auto;
   margin-top: 5%;
 }
 
@@ -65,7 +65,7 @@
 
 .Connect,
 .btnOkSignUp,
-.btnOkLogIn{
+.btnOkLogIn {
   width: 100%;
   padding: 1rem 2rem;
   font-weight: bold;
@@ -92,14 +92,15 @@
 }
 
 .link {
-  color:  #000000;
+  color: #000000;
   text-decoration: none;
   cursor: pointer;
 }
 
-.error{
+.error {
   font-weight: bold;
 }
+
 .link:hover {
   text-decoration: underline;
 }
@@ -111,8 +112,7 @@
 }
 
 .btnCancel,
-.btnConfirm
-{
+.btnConfirm {
   font-weight: bold;
   color: #ffffff;
   border: none;
@@ -124,6 +124,17 @@
   margin-right: 1rem;
 }
 
-li{
+li {
   list-style: none;
+}
+
+button {
+ 
+  margin: 4px;
+}
+
+.btn{
+  border-color:  #3a3939;
+  border-radius: 4px;
+  border-style: groove;
 }

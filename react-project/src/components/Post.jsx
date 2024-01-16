@@ -25,21 +25,12 @@ const Post = ({ post, setPosts, posts }) => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(copyPost)
+      body: JSON.stringify(post)
     };
 
-    fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
+    fetch(`http://localhost:3000/posts/${post.id}`, requestOptions)
       .then(() => {
-        let i, updatePosts;
-        posts.map((t, index) => {
-          if (t.id === copyPost.id) {
-            i = index;
-          }
-          return t;
-        });
-        updatePosts = [...posts]
-        updatePosts.splice(i, 1);
-        setPosts(updatePosts);
+        setPosts(posts.filter(currentPost => currentPost.id !== post.id));
       })
       .catch((error) => {
         console.error('There was an error!', error);
@@ -55,16 +46,7 @@ const Post = ({ post, setPosts, posts }) => {
     fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        let i, updatePosts;
-        posts.map((p, index) => {
-          if (p.id === data.id) {
-            i = index;
-          }
-          return p;
-        });
-        updatePosts = [...posts];
-        updatePosts[i] = data;
-        setPosts(updatePosts);
+        setPosts(posts.map(currentPost => post.id == currentPost.id ? data : currentPost));
         setFormPost(false)
       })
       .catch((error) => {
@@ -103,11 +85,11 @@ const Post = ({ post, setPosts, posts }) => {
             cols={50}
           />
         <hr />
-        {(user.id == post.userId) && !editState && <button onClick={() => setEditState(true)}>Edit</button>}
-        {editState && <><button onClick={handleSubmit}>Save Post</button>
-          <button onClick={resetEdit}>Reset edits</button></>}
-        {(user.id == post.userId) && <button onClick={deletePostClicked}>Delete</button>}
-        <button onClick={() => {
+        {(user.id == post.userId) && !editState && <button  className="btn" onClick={() => setEditState(true)}>Edit</button>}
+        {editState && <><button  className="btn" onClick={handleSubmit}>Save Post</button>
+          <button className="btn" onClick={resetEdit}>Reset edits</button></>}
+        {(user.id == post.userId) && <button  className="btn"  onClick={deletePostClicked}>Delete</button>}
+        <button  className="btn" onClick={() => {
           navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
             setViewComment((prev) => !prev)
         }}>view comments</button>

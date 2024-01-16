@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Post from "../components/Post.jsx"
+import MyImage from '../images/Loading.gif';
 
 const Posts = () => {
   const user = useContext(UserContext);
@@ -21,7 +22,7 @@ const Posts = () => {
   }, []);
 
   if (!posts) {
-    return <img src="../images/Loading.gif" />
+    return <img src={MyImage} />
   }
 
   if (posts.filter((p) => p.userId === user.id).length === 0) {
@@ -90,16 +91,16 @@ const Posts = () => {
             onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
             placeholder="Post body"
           /><br/>
-          <button onClick={addPostClicked}>Add Post</button>
-          <button onClick={cancelAddPost}>Cancel</button>
+          <button  className="btn" onClick={addPostClicked}>Add Post</button>
+          <button  className="btn" onClick={cancelAddPost}>Cancel</button>
         </div>
       ) : (
-        <button id="plus" onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
+        <button id="plus" className='btnMiddle'  onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
       )}
       {showAllPosts ? (
-        <button id="plus" onClick={() => setShowAllPosts(false)}>show my posts</button>
+        <button id="plus" className='btnMiddle' onClick={() => setShowAllPosts(false)}>show my posts</button>
       ) : (
-        <button id="plus" onClick={() => setShowAllPosts(true)}>show all posts</button>
+        <button id="plus" className='btnMiddle' onClick={() => setShowAllPosts(true)}>show all posts</button>
       )}
       <div>
 
@@ -113,11 +114,11 @@ const Posts = () => {
           />
         </div>
 
-        <ul>
+        <div className='allPost'>
           {filterPosts().map((post) => (
             <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   )
