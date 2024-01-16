@@ -7,7 +7,7 @@ import "../css/Photos.css"
 const Photos = () => {
   const user = useContext(UserContext);
   const [photos, setPhotos] = useState([]);
-  const [photosPerPage,setPhotosPerPage ]= useState(1);
+  const [photosPerPage, setPhotosPerPage] = useState(1);
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
 
@@ -19,14 +19,17 @@ const Photos = () => {
     funcGetPhotos();
   }, [albumId]);
 
-  const funcGetPhotos =(()=>{
+  const funcGetPhotos = (() => {
+    // if(albumId belongs to user)
     fetch(`http://localhost:3000/photos?albumId=${albumId}&_page=${photosPerPage}&_limit=4`)
-    .then(res => res.json())
-    .then(data => {
-      setPhotos([...photos , ...data]);
-      setPhotosPerPage((prev)=>(prev+1));
-    });
+      .then(res => res.json())
+      .then(data => {
+        setPhotos([...photos, ...data]);
+        setPhotosPerPage((prev) => (prev + 1));
+      });
   })
+
+
   if (!photos) {
     return <h1>Loading...</h1>
   }
@@ -98,15 +101,14 @@ const Photos = () => {
         <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>➕ Add Photo</button>
       )}
       <br />
-      <button className="more" onClick={funcGetPhotos}>
-      Load more
-      </button>
+
       <div id='allPhotos'>
         {photos.map((photo) => (
           <Photo key={photo.id} photo={photo} setPhotos={setPhotos} photos={photos} />
         ))}
-
       </div>
+
+      <button className="more" onClick={funcGetPhotos}>Load more</button>
 
 
     </div>

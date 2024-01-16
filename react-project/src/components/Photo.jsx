@@ -76,9 +76,9 @@ const Photo = ({ photo, setPhotos, photos }) => {
                 <label>photo url:
                     <input
                         className='photoInput'
-                        name="url"
+                        name="thumbnailUrl"
                         disabled={!editState}
-                        value={copyPhoto.url}
+                        value={copyPhoto.thumbnailUrl}
                         onChange={handleChange} />
                 </label></p>
 
