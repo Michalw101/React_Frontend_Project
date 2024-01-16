@@ -6,7 +6,7 @@ const Post = ({ post, setPosts, posts }) => {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
-  const [copyPost, setCopyPost] = useState({ ...post });
+  const [editPost, setEditPost] = useState({ ...post });
   const [formPost, setFormPost] = useState(false);
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
@@ -15,7 +15,7 @@ const Post = ({ post, setPosts, posts }) => {
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setCopyPost((prev) => ({
+    setEditPost((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -41,9 +41,9 @@ const Post = ({ post, setPosts, posts }) => {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(copyPost)
+      body: JSON.stringify(editPost)
     };
-    fetch(`http://localhost:3000/posts/${copyPost.id}`, requestOptions)
+    fetch(`http://localhost:3000/posts/${editPost.id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setPosts(posts.map(currentPost => post.id == currentPost.id ? data : currentPost));
@@ -58,7 +58,7 @@ const Post = ({ post, setPosts, posts }) => {
   function resetEdit() {
     navigate(`/home/users/${user.id}/posts`);
     setEditState(false);
-    setCopyPost(post);
+    setEditPost(post);
   }
 
   return (
@@ -75,12 +75,12 @@ const Post = ({ post, setPosts, posts }) => {
           <input className='postInput'
             name="title"
             disabled={!editState}
-            value={copyPost.title}
+            value={editPost.title}
             onChange={handleChange} />
           <textarea className='postInput'
             name="body"
             disabled={!editState}
-            value={copyPost.body}
+            value={editPost.body}
             onChange={handleChange}
             rows={6}
             cols={50}
