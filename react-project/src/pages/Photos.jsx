@@ -31,14 +31,14 @@ console.log(props.state)
       .then(data => {
         setPhotos([...photos, ...data]);
         setPhotosPerPage((prev) => (prev + 1));
-        
+
         // Check if there are more photos
-        if (data.length < 4) {
+        if (data.length == 0) {
           setHasMorePhotos(false);
         }
       });
   })
-  
+
 
 
   if (!photos) {
@@ -67,6 +67,8 @@ console.log(props.state)
         setPhotos([...photos]);
         setAddPhoto(false);
         setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
+        setHasMorePhotos(true);
+
       })
       .catch(error => console.error('There was an error!', error));
   };
@@ -120,8 +122,10 @@ console.log(props.state)
         ))}
       </div>
 
-      <button className="more" onClick={funcGetPhotos} disabled={!hasMorePhotos}>Load more</button>
-
+      <button className="more"
+        onClick={funcGetPhotos}
+        style={{ display: hasMorePhotos ? 'block' : 'none' }}>
+        Load more</button>
     </div>
   );
 };

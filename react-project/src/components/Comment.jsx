@@ -8,14 +8,14 @@ const Comment = ({ comment, setComments, comments }) => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [copyComment, setCopyComment] = useState({ ...comment });
+  const [editComment, setEditComment] = useState({ ...comment });
   const [editState, setEditState] = useState(false);
 
 
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setCopyComment((prev) => ({
+    setEditComment((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -26,9 +26,9 @@ const Comment = ({ comment, setComments, comments }) => {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(copyComment)
+      body: JSON.stringify(editComment)
     };
-    fetch(`http://localhost:3000/comments/${copyComment.id}`, requestOptions)
+    fetch(`http://localhost:3000/comments/${editComment.id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setComments(comments.map(currentComment => comment.id == currentComment.id ? data : currentComment));
@@ -63,7 +63,7 @@ const Comment = ({ comment, setComments, comments }) => {
 
   function resetEdit(){
     setEditState(false);
-    setCopyComment(comment);
+    setEditComment(comment);
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
   }
 
@@ -76,14 +76,14 @@ const Comment = ({ comment, setComments, comments }) => {
           <input className='commentInput'
             name="name"
             disabled={!editState}
-            value={copyComment.name}
+            value={editComment.name}
             onChange={handleChange} />
         </label>
         <label>
           <textarea className='commentInput'
             name="body"
             disabled={!editState}
-            value={copyComment.body}
+            value={editComment.body}
             onChange={handleChange}
             rows={6}
             cols={55}

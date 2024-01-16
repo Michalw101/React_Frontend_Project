@@ -8,13 +8,13 @@ const Photo = ({ photo, setPhotos, photos }) => {
     const user = useContext(UserContext);
     const navigate = useNavigate();
 
-    const [copyPhoto, setCopyPhoto] = useState({ ...photo });
+    const [editPhoto, setEditPhoto] = useState({ ...photo });
     const [editState, setEditState] = useState(false);
 
     function handleChange(e) {
         const { name, value } = e.target;
 
-        setCopyPhoto((prev) => ({
+        setEditPhoto((prev) => ({
             ...prev,
             [name]: value
         }));
@@ -48,10 +48,10 @@ const Photo = ({ photo, setPhotos, photos }) => {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(copyPhoto)
+            body: JSON.stringify(editPhoto)
         };
 
-        fetch(`http://localhost:3000/photos/${copyPhoto.id}`, requestOptions)
+        fetch(`http://localhost:3000/photos/${editPhoto.id}`, requestOptions)
             .then(() => {
                 setPhotos(photos.filter(currentPhotos => currentPhotos.id !== photo.id));
             })
@@ -61,7 +61,7 @@ const Photo = ({ photo, setPhotos, photos }) => {
     }
 
     function resetEdit() {
-        setCopyPhoto(photo);
+        setEditPhoto(photo);
         setEditState(false);
         navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos`);
     }
@@ -72,18 +72,18 @@ const Photo = ({ photo, setPhotos, photos }) => {
                 className='photoInput'
                 name="title"
                 disabled={!editState}
-                value={copyPhoto.title}
+                value={editPhoto.title}
                 onChange={handleChange} />
                 <label>photo url:
                     <input
                         className='photoInput'
                         name="thumbnailUrl"
                         disabled={!editState}
-                        value={copyPhoto.thumbnailUrl}
+                        value={editPhoto.thumbnailUrl}
                         onChange={handleChange} />
                 </label></p>
 
-            <img src={copyPhoto.thumbnailUrl} />
+            <img src={editPhoto.thumbnailUrl} />
 
             {(!editState) && <button className='delete' onClick={editClicked}>Edit</button>}
             <button className='delete' onClick={deleteClicked}>Delete</button>

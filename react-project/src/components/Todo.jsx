@@ -8,12 +8,12 @@ const Todo = ({ todo, setTodos, todos }) => {
 
     const navigate = useNavigate();
     const user = useContext(UserContext);
-    const [copyTodo, setCopyTodo] = useState({ ...todo });
+    const [editTodo, setEditTodo] = useState({ ...todo });
     const [editState, setEditState] = useState(false);
 
     function handleChange(e) {
         const { name, value } = e.target;
-        setCopyTodo((prev) => ({
+        setEditTodo((prev) => ({
             ...prev,
             [name]: value
         }));
@@ -24,17 +24,17 @@ const Todo = ({ todo, setTodos, todos }) => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({...copyTodo, completed: checked})
+            body: JSON.stringify({...editTodo, completed: checked})
         };
         updateTodos(requestOptions);
-        setCopyTodo({
-            ...copyTodo,
+        setEditTodo({
+            ...editTodo,
             completed: checked
         });
     }
 
     const updateTodos = (requestOptions) =>{
-        fetch(`http://localhost:3000/todos/${copyTodo.id}`, requestOptions)
+        fetch(`http://localhost:3000/todos/${editTodo.id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setTodos(todos.map(currentTodo => todo.id == currentTodo.id ? data : currentTodo));
@@ -50,7 +50,7 @@ const Todo = ({ todo, setTodos, todos }) => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(copyTodo)
+            body: JSON.stringify(editTodo)
         };
         updateTodos(requestOptions);
         navigate(`/home/users/${user.id}/todos`);
@@ -61,13 +61,13 @@ const Todo = ({ todo, setTodos, todos }) => {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(copyTodo)
+            body: JSON.stringify(editTodo)
         };
-        fetch(`http://localhost:3000/todos/${copyTodo.id}`, requestOptions)
+        fetch(`http://localhost:3000/todos/${editTodo.id}`, requestOptions)
             .then(() => {
                 let i, updateTodos;
                 todos.map((t, index) => {
-                    if (t.id === copyTodo.id) {
+                    if (t.id === editTodo.id) {
                         i = index;
                     }
                     return t;
@@ -89,11 +89,11 @@ const Todo = ({ todo, setTodos, todos }) => {
 
     return (
         <div className='todo'>
-            <h4 id="todoId">{copyTodo.id}</h4>
+            <h4 id="todoId">{editTodo.id}</h4>
             <input
                 className='input width'
                 type="text"
-                value={copyTodo.title}
+                value={editTodo.title}
                 name="title"
                 onChange={handleChange}
                 onDoubleClick={editTodoClicked}
@@ -101,7 +101,7 @@ const Todo = ({ todo, setTodos, todos }) => {
             <input
                 className='innerCheckbox'
                 type="checkbox"
-                checked={copyTodo.completed}
+                checked={editTodo.completed}
                 name="completed"
                 onChange={handleCheckboxChange}
             />
@@ -116,7 +116,7 @@ const Todo = ({ todo, setTodos, todos }) => {
                         onClick={() => {
                             setEditState((prev) => !prev);
                             navigate(`/home/users/${user.id}/todos`);
-                            setCopyTodo(todo);
+                            setEditTodo(todo);
                         }}
                     >
                         ✖
