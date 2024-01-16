@@ -116,6 +116,7 @@ const Todo = ({ todo, setTodos, todos }) => {
                         onClick={() => {
                             setEditState((prev) => !prev);
                             navigate(`/home/users/${user.id}/todos`);
+                            setCopyTodo(todo);
                         }}
                     >
                         ✖

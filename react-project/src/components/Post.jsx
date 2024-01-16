@@ -58,6 +58,7 @@ const Post = ({ post, setPosts, posts }) => {
   function resetEdit() {
     navigate(`/home/users/${user.id}/posts`);
     setEditState(false);
+    setCopyPost(post);
   }
 
   return (
