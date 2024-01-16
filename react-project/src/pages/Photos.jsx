@@ -10,6 +10,8 @@ const Photos = () => {
   const [photosPerPage, setPhotosPerPage] = useState(1);
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
+  const [hasMorePhotos, setHasMorePhotos] = useState(true);
+
 
   let { albumId } = useParams();
   albumId = parseInt(albumId, 10);
@@ -26,8 +28,14 @@ const Photos = () => {
       .then(data => {
         setPhotos([...photos, ...data]);
         setPhotosPerPage((prev) => (prev + 1));
+        
+        // Check if there are more photos
+        if (data.length < 4) {
+          setHasMorePhotos(false);
+        }
       });
   })
+  
 
 
   if (!photos) {
@@ -53,6 +61,7 @@ const Photos = () => {
       .then(response => response.json())
       .then(data => {
         // setPhotos([...photos, data]);
+        setPhotos([...photos]);
         setAddPhoto(false);
         setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
       })
@@ -108,8 +117,7 @@ const Photos = () => {
         ))}
       </div>
 
-      <button className="more" onClick={funcGetPhotos}>Load more</button>
-
+      <button className="more" onClick={funcGetPhotos} disabled={!hasMorePhotos}>Load more</button>
 
     </div>
   );
