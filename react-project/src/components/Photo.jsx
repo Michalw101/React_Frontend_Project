@@ -61,8 +61,9 @@ const Photo = ({ photo, setPhotos, photos }) => {
     }
 
     function resetEdit() {
-        navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos`);
+        setCopyPhoto(photo);
         setEditState(false);
+        navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos`);
     }
 
     return (

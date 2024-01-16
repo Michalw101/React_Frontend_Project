@@ -63,6 +63,7 @@ const Comment = ({ comment, setComments, comments }) => {
 
   function resetEdit(){
     setEditState(false);
+    setCopyComment(comment);
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
   }
 
