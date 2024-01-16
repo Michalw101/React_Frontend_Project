@@ -85,7 +85,7 @@ const Comment = ({ comment, setComments, comments }) => {
             value={copyComment.body}
             onChange={handleChange}
             rows={6}
-            cols={50}
+            cols={55}
           />
         </label>
         <hr />

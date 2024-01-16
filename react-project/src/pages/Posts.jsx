@@ -5,27 +5,41 @@ import MyImage from '../images/Loading.gif';
 
 const Posts = () => {
   const user = useContext(UserContext);
-  const [posts, setPosts] = useState(null);
+  const [userPosts, setUserPosts] = useState(null);
+  const [allPosts, setAllPosts] = useState(null);
   const [searchBy, setSearchBy] = useState('');
   const [addPost, setAddPost] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', body: '' });
-  const [showAllPosts, setShowAllPosts] = useState(false)
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false)
+  const [showAllPosts, setShowAllPosts] = useState(false);
 
   let returnMassege;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts`)
+    fetch(`http://localhost:3000/posts/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
-        setPosts(data);
+        setUserPosts(data);
+        console.log("user posts load");
       })
   }, []);
 
-  if (!posts) {
+  useEffect(() => {
+    if (allPosts == null && allPostsLoaded == true) {
+      fetch(`http://localhost:3000/posts`)
+        .then(res => res.json())
+        .then(data => {
+        console.log("all posts load");
+        setAllPosts(data);
+        })
+    }
+  }, [allPostsLoaded]);
+
+  if ((!showAllPosts && !userPosts) || (showAllPosts && !allPosts)) {
     return <img src={MyImage} />
   }
 
-  if (posts.filter((p) => p.userId === user.id).length === 0) {
+  if ((!showAllPosts && !userPosts.length === 0) || (showAllPosts && !allPosts.length === 0)) {
     returnMassege = <h1>No posts found.</h1>
   }
 
@@ -35,14 +49,10 @@ const Posts = () => {
 
   const filterPosts = () => {
 
-    let filteredPosts = showAllPosts ?
-      posts :
-      posts != null ?
-        posts.filter((p) => p.userId === user.id) :
-        posts;
+    let filteredPosts = showAllPosts ? allPosts : userPosts;
 
     if (searchBy) {
-      filteredPosts = posts.filter(post =>
+      filteredPosts.filter(post =>
         post.title.toLowerCase().includes(searchBy.toLowerCase()) ||
         post.id.toString().includes(searchBy)
       );
@@ -77,6 +87,7 @@ const Posts = () => {
     <div className='posts'>
       <h1>Posts</h1>
       {returnMassege}
+
       {addPost ? (
         <div className='addPost'>
           <input className='postInput'
@@ -84,23 +95,24 @@ const Posts = () => {
             value={newPost.title}
             onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
             placeholder="Post title"
-          /><br/>
-          <input  className='postInput'
+          /><br />
+          <input className='postInput'
             type="text"
             value={newPost.body}
             onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
             placeholder="Post body"
-          /><br/>
-          <button  className="btn" onClick={addPostClicked}>Add Post</button>
-          <button  className="btn" onClick={cancelAddPost}>Cancel</button>
+          /><br />
+          <button className="btn" onClick={addPostClicked}>Add Post</button>
+          <button className="btn" onClick={cancelAddPost}>Cancel</button>
         </div>
       ) : (
-        <button id="plus" className='btnMiddle'  onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
+        <button id="plus" className='btnMiddle' onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
       )}
+
       {showAllPosts ? (
         <button id="plus" className='btnMiddle' onClick={() => setShowAllPosts(false)}>show my posts</button>
       ) : (
-        <button id="plus" className='btnMiddle' onClick={() => setShowAllPosts(true)}>show all posts</button>
+        <button id="plus" className='btnMiddle' onClick={() => { setShowAllPosts(true), setAllPostsLoaded(true) }}>show all posts</button>
       )}
       <div>
 
@@ -116,8 +128,18 @@ const Posts = () => {
 
         <div className='allPost'>
           {filterPosts().map((post) => (
-            <Post key={post.id} post={post} setPosts={setPosts} posts={posts} />
+            <Post key={post.id}
+              post={post}
+              setPosts={showAllPosts ? setAllPosts : setUserPosts}
+              posts={showAllPosts ? allPosts : userPosts} />
           ))}
+          {userPosts != null ?
+            console.log("user posts " + userPosts.length) :
+            console.log("user posts null")}
+
+          {allPosts != null ?
+            console.log("all posts " + allPosts.length) :
+            console.log("all posts null")}
         </div>
       </div>
     </div>
