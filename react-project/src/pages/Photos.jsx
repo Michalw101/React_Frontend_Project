@@ -3,16 +3,19 @@ import { useParams, Link } from 'react-router-dom';
 import Photo from '../components/Photo';
 import { UserContext } from "../App.jsx"
 import "../css/Photos.css"
+import { useLocation } from "react-router";
 
-const Photos = () => {
+
+const Photos = (props) => {
   const user = useContext(UserContext);
   const [photos, setPhotos] = useState([]);
   const [photosPerPage, setPhotosPerPage] = useState(1);
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
   const [hasMorePhotos, setHasMorePhotos] = useState(true);
-
-
+  
+  const { state } = useLocation();
+console.log(props.state)
   let { albumId } = useParams();
   albumId = parseInt(albumId, 10);
   let returnMassege = "";
@@ -103,8 +106,8 @@ const Photos = () => {
             onChange={(e) => setNewPhoto({ ...newPhoto, thumbnailUrl: e.target.value })}
             placeholder="Photo thumbnailUrl"
           />
-          <button onClick={addPhotoClicked}>Add Photo</button>
-          <button onClick={cancelAddPhoto}>Cancel</button>
+          <button className='btn' onClick={addPhotoClicked}>Add Photo</button>
+          <button  className='btn' onClick={cancelAddPhoto}>Cancel</button>
         </div>
       ) : (
         <button id="plus" onClick={() => setAddPhoto((prev) => !prev)}>➕ Add Photo</button>

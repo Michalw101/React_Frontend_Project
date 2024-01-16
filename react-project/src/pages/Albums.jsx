@@ -108,7 +108,7 @@ const Albums = () => {
 
         <div id="allAlbums">
           {sortedAndFilteredAlbums().map((album) => (
-            <Album key={album.id} album={album} setAlbums={setAlbums} albums={albums} />
+            <Album key={album.id} album={album}/>
           ))}
         </div>
       </div>

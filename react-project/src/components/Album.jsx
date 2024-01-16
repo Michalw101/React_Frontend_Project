@@ -1,15 +1,22 @@
 import React, { useContext } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
-// M 
-const Album = ({ album, setAlbums, albums }) => {
+
+const Album = ({ album }) => {
 
   const user = useContext(UserContext);
   return (
 
     <div className='album'><h3>{album.id}</h3>
       <p>{album.title}</p>
-      <Link key={album.id} to={`/home/users/${user.id}/albums/${album.id}/photos`}>view album</Link>
+      <Link
+        to={{
+          pathname: `/home/users/${user.id}/albums/${album.id}/photos`,
+          state: { album }
+        }}
+      >
+        view album
+      </Link>
     </div>
 
   )

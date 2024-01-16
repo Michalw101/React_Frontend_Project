@@ -12,6 +12,7 @@ import Logout from "./pages/Logout"
 import Comments from "./pages/Comments";
 import Photos from "./pages/Photos";
 import './App.css'
+import Album from "./components/Album";
 
 
 export const UserContext = createContext(null);
