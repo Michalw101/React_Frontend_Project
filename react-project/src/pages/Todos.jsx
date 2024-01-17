@@ -13,24 +13,21 @@ const Todos = () => {
   const [newTodo, setNewTodo] = useState({ title: '', completed: false });
   const [searchCheckbox, setSearchCheckbox] = useState(false);
   let returnMassege = "";
+
   useEffect(() => {
-    if (user.id) {
     fetch(`http://localhost:3000/todos?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setTodos(data);
       })
-    }
   }, []);
 
-  if (!todos) {
+  if (!todos) 
     return <img src={MyImage} />;
-  }
-
-  if (todos.length === 0) {
+  
+  if (todos.length === 0) 
     returnMassege = <h1>No todos found.</h1>
-  }
-
+  
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
   };
@@ -87,7 +84,7 @@ const Todos = () => {
       .catch(error => console.error('There was an error!', error));
   }
 
-  const cancelAddTodo = () => {
+  const cancleAddTodo = () => {
     setAddTodo(false);
     setNewTodo({ title: '', completed: false });
   };
@@ -138,7 +135,7 @@ const Todos = () => {
             placeholder="Todo title"
           />
           <button className="btn" onClick={addTodoClicked}>Save Todo</button>
-          <button className="btn" onClick={cancelAddTodo}>Cancel</button>
+          <button className="btn" onClick={cancleAddTodo}>Cancel</button>
         </div>
       ) : (
         <button id="plus" onClick={() => setAddTodo((prev) => !prev)}>

@@ -15,25 +15,21 @@ const Albums = () => {
   let returnMassege = "";
 
   useEffect(() => {
-    if (user.id) {
-      fetch(`http://localhost:3000/albums/?userId=${user.id}`)
-        .then(res => res.json())
-        .then(data => {
-          setAlbums(data);
-        })
-    }
+    fetch(`http://localhost:3000/albums/?userId=${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+        setAlbums(data);
+      })
   }, []);
 
-
-  if (!albums) {
+  if (!albums)
     return <img src={MyImage} />;
-  }
 
-  if (albums.length === 0) {
+
+  if (albums.length === 0)
     returnMassege = <h1>No albums found.</h1>
-  }
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event)  =>{
     setSearchBy(event.target.value);
   };
 
@@ -47,11 +43,9 @@ const Albums = () => {
       );
     }
     return filteredAlbums;
-
   };
 
   const addAlbumClicked = () => {
-
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

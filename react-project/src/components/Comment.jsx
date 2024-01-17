@@ -10,7 +10,7 @@ const Comment = ({ comment, setComments, comments }) => {
   const [editComment, setEditComment] = useState({ ...comment });
   const [editState, setEditState] = useState(false);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setEditComment((prev) => ({
       ...prev,
@@ -18,7 +18,7 @@ const Comment = ({ comment, setComments, comments }) => {
     }));
   }
 
-  function handleSubmit() {
+  const handleSubmit = () => {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -36,12 +36,12 @@ const Comment = ({ comment, setComments, comments }) => {
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
   }
 
-  function editClicked() {
+  const editClicked = () => {
     setEditState((prev) => !prev);
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments/${comment.id}`);
   }
 
-  function deleteClicked() {
+  const deleteClicked = () => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -57,7 +57,7 @@ const Comment = ({ comment, setComments, comments }) => {
       });
   }
 
-  function resetEdit() {
+  const resetEdit = () => {
     setEditState(false);
     setEditComment(comment);
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);

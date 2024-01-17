@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import Photo from '../components/Photo';
 import { UserContext } from "../App.jsx"
 import "../css/Photos.css"
@@ -13,18 +13,16 @@ const Photos = () => {
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
   const [hasMorePhotos, setHasMorePhotos] = useState(true);
-  // const { state } = useLocation();
-  // const { id, title } = state  || {};
-  // let albumId = id;
-  let { albumId } = useParams();
-  albumId = parseInt(albumId, 10);
+  const { state } = useLocation();
+  const { id, title } = state || {};
+  let albumId = id;
   let returnMassege = "";
  
   useEffect(() => {
-    funcGetPhotos();
+    fetchRequestGet();
   }, []);
 
-  const funcGetPhotos = (() => {
+  const fetchRequestGet = (() => {
     fetch(`http://localhost:3000/photos?albumId=${albumId}&_page=${photosPerPage}&_limit=4`)
       .then(res => res.json())
       .then(data => {
@@ -37,16 +35,13 @@ const Photos = () => {
       });
   })
 
-  if (!photos) {
+  if (!photos) 
     return <h1>Loading...</h1>
-  }
-
-  if (photos.length === 0) {
+  
+  if (photos.length === 0) 
     returnMassege = <h1>No photos found.</h1>
-  }
-
+  
   const addPhotoClicked = () => {
-
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -80,7 +75,7 @@ const Photos = () => {
 
     <div className='photos'>
       <h1>Photos of album number {albumId}</h1>
-      {/* <h2>Album's title: {title}</h2> */}
+      <h2>Album's title: {title}</h2>
       {returnMassege}
       <Link className="return" to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
 
@@ -122,7 +117,7 @@ const Photos = () => {
       </div>
 
       <button className="more"
-        onClick={funcGetPhotos}
+        onClick={fetchRequestGet}
         style={{ display: hasMorePhotos ? 'block' : 'none' }}>
         Load more</button>
     </div>

@@ -11,7 +11,7 @@ const Todo = ({ todo, setTodos, todos }) => {
     const [editTodo, setEditTodo] = useState({ ...todo });
     const [editState, setEditState] = useState(false);
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setEditTodo((prev) => ({
             ...prev,
@@ -19,21 +19,32 @@ const Todo = ({ todo, setTodos, todos }) => {
         }));
     }
 
-    function handleCheckboxChange(e) {
+    const handleCheckboxChange = (e) => {
         const { checked } = e.target;
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({...editTodo, completed: checked})
+            body: JSON.stringify({ ...editTodo, completed: checked })
         };
-        updateTodos(requestOptions);
+        fetchRequestPut(requestOptions);
         setEditTodo({
             ...editTodo,
             completed: checked
         });
     }
 
-    const updateTodos = (requestOptions) =>{
+    const handleSubmit = () => {
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(editTodo)
+        };
+        fetchRequestPut(requestOptions);
+        navigate(`/home/users/${user.id}/todos`);
+        setEditState(false);
+    }
+
+    const fetchRequestPut = (requestOptions) => {
         fetch(`http://localhost:3000/todos/${editTodo.id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
@@ -45,19 +56,7 @@ const Todo = ({ todo, setTodos, todos }) => {
             });
     }
 
-    const handleSubmit=()=>
-    {
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(editTodo)
-        };
-        updateTodos(requestOptions);
-        navigate(`/home/users/${user.id}/todos`);
-        setEditState(false);
-    }
-
-    function deleteTodoClicked() {
+    const deleteTodoClicked = () => {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -73,7 +72,7 @@ const Todo = ({ todo, setTodos, todos }) => {
         navigate(`/home/users/${user.id}/todos`);
     }
 
-    function editTodoClicked() {
+    const editTodoClicked = () => {
         setEditState((prev) => !prev)
         navigate(`/home/users/${user.id}/todos/${todo.id}`);
     }

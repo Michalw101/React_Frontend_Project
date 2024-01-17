@@ -10,16 +10,15 @@ const Photo = ({ photo, setPhotos, photos }) => {
     const [editPhoto, setEditPhoto] = useState({ ...photo });
     const [editState, setEditState] = useState(false);
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-
         setEditPhoto((prev) => ({
             ...prev,
             [name]: value
         }));
     }
 
-    function handleSubmit() {
+    const handleSubmit = () => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -37,13 +36,13 @@ const Photo = ({ photo, setPhotos, photos }) => {
         navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos`);
     }
 
-    function editClicked() {
+    const editClicked = () => {
         setEditState((prev) => !prev);
         navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos/${photo.id}`);
     }
 
 
-    function deleteClicked() {
+    const deleteClicked = () => {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -59,7 +58,7 @@ const Photo = ({ photo, setPhotos, photos }) => {
             });
     }
 
-    function resetEdit() {
+    const resetEdit = () => {
         setEditPhoto(photo);
         setEditState(false);
         navigate(`/home/users/${user.id}/albums/${photo.albumId}/photos`);

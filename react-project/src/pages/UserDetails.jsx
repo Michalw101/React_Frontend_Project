@@ -63,10 +63,10 @@ const UserDetails = ({ setUser }) => {
       .then((response) => response.json())
       .then((data) => {
         setUser(data);
-        const detailsOfUserWithoutWebsite = { ...data };
-        delete detailsOfUserWithoutWebsite.website;
+        const userWithoutWebsite = { ...data };
+        delete userWithoutWebsite.website;
         localStorage.setItem("currentUser", data.id);
-        localStorage.setItem(data.id, JSON.stringify(detailsOfUserWithoutWebsite));
+        localStorage.setItem(data.id, JSON.stringify(userWithoutWebsite));
         navigate('/home');
       })
       .catch((error) => {

@@ -11,18 +11,17 @@ function LogIn({ setUser }) {
     const [password, setPassword] = useState('');
     let user;
 
-    function handleLogin() {
-        const userURL = `http://localhost:3000/users?username=${userName}`;
-        fetch(userURL)
+    const handleLogin=()=> {
+        fetch(`http://localhost:3000/users?username=${userName}`)
             .then(response => response.json())
             .then(data => {
                 user = data[0];
                 if (user && user.website == password) {
                     setLoginError("");
                     localStorage.setItem("currentUser", user.id);
-                    const detailsOfUserWithoutWebsite = { ...user };
-                    delete detailsOfUserWithoutWebsite.website;
-                    localStorage.setItem(user.id, JSON.stringify(detailsOfUserWithoutWebsite));
+                    const userWithoutWebsite = { ...user };
+                    delete userWithoutWebsite.website;
+                    localStorage.setItem(user.id, JSON.stringify(userWithoutWebsite));
                     setUser(user);
                     navigate('/home');
                 }

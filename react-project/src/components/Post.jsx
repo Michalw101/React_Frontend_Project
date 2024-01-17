@@ -12,7 +12,7 @@ const Post = ({ post, setPosts, posts }) => {
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setEditPost((prev) => ({
       ...prev,
@@ -20,7 +20,7 @@ const Post = ({ post, setPosts, posts }) => {
     }));
   }
 
-  function deletePostClicked() {
+  const deletePostClicked = () => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +36,7 @@ const Post = ({ post, setPosts, posts }) => {
       });
   }
 
-  function handleSubmit() {
+  const handleSubmit = () => {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -54,7 +54,7 @@ const Post = ({ post, setPosts, posts }) => {
     navigate(`/home/users/${user.id}/posts`);
   }
 
-  function resetEdit() {
+  const resetEdit = () => {
     navigate(`/home/users/${user.id}/posts`);
     setEditState(false);
     setEditPost(post);
@@ -71,27 +71,27 @@ const Post = ({ post, setPosts, posts }) => {
 
       </div>
       {formPost && <div className='postDetails'>
-          <input className='postInput'
-            name="title"
-            disabled={!editState}
-            value={editPost.title}
-            onChange={handleChange} />
-          <textarea className='postInput'
-            name="body"
-            disabled={!editState}
-            value={editPost.body}
-            onChange={handleChange}
-            rows={6}
-            cols={50}
-          />
+        <input className='postInput'
+          name="title"
+          disabled={!editState}
+          value={editPost.title}
+          onChange={handleChange} />
+        <textarea className='postInput'
+          name="body"
+          disabled={!editState}
+          value={editPost.body}
+          onChange={handleChange}
+          rows={6}
+          cols={50}
+        />
         <hr />
-        {(user.id == post.userId) && !editState && <button  className="btn" onClick={() => setEditState(true)}>Edit</button>}
-        {editState && <><button  className="btn" onClick={handleSubmit}>Save Post</button>
+        {(user.id == post.userId) && !editState && <button className="btn" onClick={() => setEditState(true)}>Edit</button>}
+        {editState && <><button className="btn" onClick={handleSubmit}>Save Post</button>
           <button className="btn" onClick={resetEdit}>Reset edits</button></>}
-        {(user.id == post.userId) && <button  className="btn"  onClick={deletePostClicked}>Delete</button>}
-        <button  className="btn" onClick={() => {
-          navigate(`/home/users/${user.id}/posts/${post.id}/comments`, {state: post}),
-          setViewComment((prev) => !prev)
+        {(user.id == post.userId) && <button className="btn" onClick={deletePostClicked}>Delete</button>}
+        <button className="btn" onClick={() => {
+          navigate(`/home/users/${user.id}/posts/${post.id}/comments`, { state: post }),
+            setViewComment((prev) => !prev)
         }}>view comments</button>
       </div>}
       {viewComments && <Outlet />}

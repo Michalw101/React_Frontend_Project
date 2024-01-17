@@ -18,8 +18,9 @@ const HomePage = () => {
       </nav>
       {(location.pathname.includes('todos') ||
         location.pathname.includes('posts') ||
-        location.pathname.includes('albums'))
-        ? null : <p className='title'>Welcome to {user.name}</p>}
+        location.pathname.includes('albums')) ?
+        null :
+        <p className='title'>Welcome to {user.name}</p>}
 
       <Outlet />
     </div>

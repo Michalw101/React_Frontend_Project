@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { UserContext } from "../App.jsx"
-import { useParams } from 'react-router-dom';
+import { useLocation } from "react-router";
 import Comment from '../components/Comment.jsx';
 
 const Comments = () => {
@@ -8,28 +8,26 @@ const Comments = () => {
   const [comments, setComments] = useState(null);
   const [addComment, setAddComment] = useState(false);
   const [newComment, setNewComment] = useState({ name: '', body: '' });
-  let { postId } = useParams();
-  postId = parseInt(postId, 10);
+  const { state } = useLocation();
+  const { id } = state || {};
+  let postId = id;
+  // let { postId } = useParams();
+  // postId = parseInt(postId, 10);
   let returnMassege;
 
   useEffect(() => {
-    if (user.id) {
-
     fetch(`http://localhost:3000/comments?postId=${postId}`)
       .then(response => response.json())
       .then(data => {
         setComments(data);
       })
-    }
   }, []);
 
-  if (!comments) {
+  if (!comments) 
     return <h1>Loading...</h1>
-  }
 
-  if (comments.length === 0) {
+  if (comments.length === 0) 
     returnMassege = <h1>No comments found.</h1>
-  }
 
   const addCommentClicked = () => {
     const requestOptions = {
@@ -48,7 +46,7 @@ const Comments = () => {
       .catch(error => console.error('There was an error!', error));
   }
 
-  const cancelAddComment = () => {
+  const cancleAddComment = () => {
     setAddComment(false);
     setNewComment({ name: '', body: '' });
   };
@@ -74,7 +72,7 @@ const Comments = () => {
           />
           <br/>
           <button className='btn' onClick={addCommentClicked}>Add</button>
-          <button className='btn' onClick={cancelAddComment}>Cancel</button>
+          <button className='btn' onClick={cancleAddComment}>Cancel</button>
         </div>
       ) : (
         <button className='btn' onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>

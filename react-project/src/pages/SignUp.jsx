@@ -10,7 +10,7 @@ function SignUp({ setUser }) {
     const [signUpError, setSignUpError] = useState('');
     let userFromDB;
 
-    function handleRegistration() {
+    const handleRegistration=() =>{
         if (!userName || !password || !passwordVerify) {
             setSignUpError('Please fill in all fields.');
             return;
@@ -41,7 +41,7 @@ function SignUp({ setUser }) {
 
     }
 
-    function CheckPassword(password) {
+    const CheckPassword=(password) =>{
         let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
         if (password.match(psw)) {
             return true;

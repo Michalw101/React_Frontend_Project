@@ -15,12 +15,11 @@ const Posts = () => {
   let returnMassege = "";
 
   useEffect(() => {
-    if (user.id) {
     fetch(`http://localhost:3000/posts/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setUserPosts(data);
-      })}
+      })
   }, []);
 
   useEffect(() => {
@@ -33,20 +32,17 @@ const Posts = () => {
     }
   }, [allPostsLoaded]);
 
-  if ((!showAllPosts && !userPosts) || (showAllPosts && !allPosts)) {
+  if ((!showAllPosts && !userPosts) || (showAllPosts && !allPosts)) 
     return <img src={MyImage} />
-  }
-
-  if ((!showAllPosts && userPosts.length === 0) || (showAllPosts && allPosts.length === 0)) {
+  
+  if ((!showAllPosts && userPosts.length === 0) || (showAllPosts && allPosts.length === 0)) 
     returnMassege = <h1>No posts found.</h1>
-  }
-
+  
   const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
   };
 
   const filterPosts = () => {
-
     let filteredPosts = showAllPosts ? allPosts : userPosts;;
     let posts = showAllPosts ? allPosts : userPosts;
     if (searchBy) {
@@ -59,7 +55,6 @@ const Posts = () => {
   };
 
   const addPostClicked = () => {
-
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
