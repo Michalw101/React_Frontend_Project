@@ -2,6 +2,7 @@ import { useNavigate, Outlet } from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import { UserContext } from "../App.jsx"
 import "../css/Posts.css"
+
 const Post = ({ post, setPosts, posts }) => {
 
   const user = useContext(UserContext);
@@ -11,10 +12,8 @@ const Post = ({ post, setPosts, posts }) => {
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
 
-
   function handleChange(e) {
     const { name, value } = e.target;
-
     setEditPost((prev) => ({
       ...prev,
       [name]: value
@@ -91,8 +90,8 @@ const Post = ({ post, setPosts, posts }) => {
           <button className="btn" onClick={resetEdit}>Reset edits</button></>}
         {(user.id == post.userId) && <button  className="btn"  onClick={deletePostClicked}>Delete</button>}
         <button  className="btn" onClick={() => {
-          navigate(`/home/users/${user.id}/posts/${post.id}/comments`),
-            setViewComment((prev) => !prev)
+          navigate(`/home/users/${user.id}/posts/${post.id}/comments`, {state: post}),
+          setViewComment((prev) => !prev)
         }}>view comments</button>
       </div>}
       {viewComments && <Outlet />}

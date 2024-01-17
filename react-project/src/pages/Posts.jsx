@@ -12,15 +12,13 @@ const Posts = () => {
   const [newPost, setNewPost] = useState({ title: '', body: '' });
   const [allPostsLoaded, setAllPostsLoaded] = useState(false)
   const [showAllPosts, setShowAllPosts] = useState(false);
-
-  let returnMassege;
+  let returnMassege = "";
 
   useEffect(() => {
     fetch(`http://localhost:3000/posts/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setUserPosts(data);
-        console.log("user posts load");
       })
   }, []);
 
@@ -29,8 +27,7 @@ const Posts = () => {
       fetch(`http://localhost:3000/posts`)
         .then(res => res.json())
         .then(data => {
-        console.log("all posts load");
-        setAllPosts(data);
+          setAllPosts(data);
         })
     }
   }, [allPostsLoaded]);
@@ -39,7 +36,7 @@ const Posts = () => {
     return <img src={MyImage} />
   }
 
-  if ((!showAllPosts && !userPosts.length === 0) || (showAllPosts && !allPosts.length === 0)) {
+  if ((!showAllPosts && userPosts.length === 0) || (showAllPosts && allPosts.length === 0)) {
     returnMassege = <h1>No posts found.</h1>
   }
 
@@ -49,10 +46,10 @@ const Posts = () => {
 
   const filterPosts = () => {
 
-    let filteredPosts = showAllPosts ? allPosts : userPosts;
-
+    let filteredPosts = showAllPosts ? allPosts : userPosts;;
+    let posts = showAllPosts ? allPosts : userPosts;
     if (searchBy) {
-      filteredPosts.filter(post =>
+       filteredPosts = posts.filter(post =>
         post.title.toLowerCase().includes(searchBy.toLowerCase()) ||
         post.id.toString().includes(searchBy)
       );
@@ -71,7 +68,7 @@ const Posts = () => {
     fetch('http://localhost:3000/posts', requestOptions)
       .then(response => response.json())
       .then(data => {
-        setPosts([...posts, data]);
+        showAllPosts ? setAllPosts([...allPosts, data]) : setUserPosts([...userPosts, data]) ;
         setAddPost(false);
         setNewPost({ title: '', body: '' });
       })
@@ -87,7 +84,6 @@ const Posts = () => {
     <div className='posts'>
       <h1>Posts</h1>
       {returnMassege}
-
       {addPost ? (
         <div className='addPost'>
           <input className='postInput'
@@ -126,24 +122,17 @@ const Posts = () => {
           />
         </div>
 
-        <div className='allPost'>
+         <div className='allPost'>
           {filterPosts().map((post) => (
             <Post key={post.id}
               post={post}
               setPosts={showAllPosts ? setAllPosts : setUserPosts}
               posts={showAllPosts ? allPosts : userPosts} />
           ))}
-          {userPosts != null ?
-            console.log("user posts " + userPosts.length) :
-            console.log("user posts null")}
-
-          {allPosts != null ?
-            console.log("all posts " + allPosts.length) :
-            console.log("all posts null")}
         </div>
       </div>
     </div>
   )
 }
 
-export default Posts
+export default Posts;

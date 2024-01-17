@@ -3,9 +3,6 @@
     margin: 1rem 0;
     padding: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    /* border-radius: 8px; */
-    /* display: flex; */
-    /* flex-direction: column; */
     margin-bottom: 1rem;
     border: 1px solid #181414;
     border-radius: 4px;
@@ -32,7 +29,6 @@
     width: 70%;
     max-width: 70%;
     padding: 2rem;
-    /* box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); */
     border-radius: 4px;
     opacity: calc(#000000);
     direction: ltr;

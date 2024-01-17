@@ -4,7 +4,6 @@ import Todo from '../components/Todo.jsx';
 import "../css/todos.css"
 import MyImage from '../images/Loading.gif';
 
-
 const Todos = () => {
   const user = useContext(UserContext);
   const [todos, setTodos] = useState(null);
@@ -20,7 +19,7 @@ const Todos = () => {
       .then(data => {
         setTodos(data);
       })
-  }, [user.id]);
+  }, []);
 
   if (!todos) {
     return <img src={MyImage} />;
@@ -144,7 +143,6 @@ const Todos = () => {
           ➕ Add Todo
         </button>
       )}
-
 
       <div id='allTodos'>
         {sortedAndFilteredTodos().map((todo) => (

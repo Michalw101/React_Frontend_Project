@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
 import '../App.css';
 
-
-
 const Logout = ({setUser}) => {
   const  user = useContext(UserContext);
   const navigate = useNavigate();

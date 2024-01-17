@@ -3,7 +3,6 @@ import { UserContext } from "../App.jsx"
 import { useParams } from 'react-router-dom';
 import Comment from '../components/Comment.jsx';
 
-
 const Comments = () => {
   const user = useContext(UserContext);
   const [comments, setComments] = useState(null);
@@ -11,7 +10,6 @@ const Comments = () => {
   const [newComment, setNewComment] = useState({ name: '', body: '' });
   let { postId } = useParams();
   postId = parseInt(postId, 10);
-
   let returnMassege;
 
   useEffect(() => {
@@ -20,7 +18,7 @@ const Comments = () => {
       .then(data => {
         setComments(data);
       })
-  }, [postId]);
+  }, []);
 
   if (!comments) {
     return <h1>Loading...</h1>
@@ -37,7 +35,7 @@ const Comments = () => {
       body: JSON.stringify({ ...newComment, postId: postId, email: user.email })
     };
 
-    fetch('http://localhost:3000/todos', requestOptions)
+    fetch('http://localhost:3000/comments', requestOptions)
       .then(response => response.json())
       .then(data => {
         setComments([...comments, data]);
@@ -79,7 +77,6 @@ const Comments = () => {
         <button className='btn' onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>
       )}
 
-
       <div>
         {comments.map(
           (comment) => (
@@ -87,8 +84,7 @@ const Comments = () => {
           ))}
       </div>
     </>
-
   )
 }
 
-export default Comments
+export default Comments;

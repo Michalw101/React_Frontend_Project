@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
 import "../css/todos.css"
@@ -65,16 +65,7 @@ const Todo = ({ todo, setTodos, todos }) => {
         };
         fetch(`http://localhost:3000/todos/${editTodo.id}`, requestOptions)
             .then(() => {
-                let i, updateTodos;
-                todos.map((t, index) => {
-                    if (t.id === editTodo.id) {
-                        i = index;
-                    }
-                    return t;
-                });
-                updateTodos = [...todos];
-                updateTodos.splice(i, 1);
-                setTodos(updateTodos);
+                setTodos(todos.filter(currentTodo => currentTodo.id !== todo.id));
             })
             .catch((error) => {
                 console.error('There was an error!', error);

@@ -12,10 +12,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-image: url("images/8.jpg");
-  background-repeat: no-repeat;
-  background-position: left;
-  background-size: cover;  */
 }
 
 .logout {

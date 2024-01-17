@@ -7,20 +7,16 @@ const Comment = ({ comment, setComments, comments }) => {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
-
   const [editComment, setEditComment] = useState({ ...comment });
   const [editState, setEditState] = useState(false);
 
-
   function handleChange(e) {
     const { name, value } = e.target;
-
     setEditComment((prev) => ({
       ...prev,
       [name]: value
     }));
   }
-
 
   function handleSubmit() {
     const requestOptions = {
@@ -38,7 +34,7 @@ const Comment = ({ comment, setComments, comments }) => {
         console.error('There was an error!', error);
       });
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
- }
+  }
 
   function editClicked() {
     setEditState((prev) => !prev);
@@ -61,44 +57,43 @@ const Comment = ({ comment, setComments, comments }) => {
       });
   }
 
-  function resetEdit(){
+  function resetEdit() {
     setEditState(false);
     setEditComment(comment);
     navigate(`/home/users/${user.id}/posts/${comment.postId}/comments`);
   }
 
   return (
-    <>
-      <div className='comment'>
-        <p>{comment.id}. {comment.email}</p>
-        <label>
-          Comment title:
-          <input className='commentInput'
-            name="name"
-            disabled={!editState}
-            value={editComment.name}
-            onChange={handleChange} />
-        </label>
-        <label>
-          <textarea className='commentInput'
-            name="body"
-            disabled={!editState}
-            value={editComment.body}
-            onChange={handleChange}
-            rows={6}
-            cols={55}
-          />
-        </label>
-        <hr />
+    <div className='comment'>
+      <p>{comment.id}. {comment.email}</p>
+      <label>
+        Comment title:
+        <input className='commentInput'
+          name="name"
+          disabled={!editState}
+          value={editComment.name}
+          onChange={handleChange} />
+      </label>
+      <label>
+        <textarea className='commentInput'
+          name="body"
+          disabled={!editState}
+          value={editComment.body}
+          onChange={handleChange}
+          rows={6}
+          cols={55}
+        />
+      </label>
+      <hr />
 
-        {(user.email === comment.email) &&
-          <>{(!editState) && <button  className="btn" onClick={editClicked}>Edit</button>}
-           <button className="btn" onClick={deleteClicked}>Delete</button></>}
+      {(user.email === comment.email) &&
+        <>{(!editState) && <button className="btn" onClick={editClicked}>Edit</button>}
+          <button className="btn" onClick={deleteClicked}>Delete</button></>}
 
-        {editState && <><button  className="btn" onClick={handleSubmit}>Save comment</button>
-          <button  className="btn"  onClick={resetEdit}>Reset edits</button></>}
-      </div>
-    </>)
+      {editState && <><button className="btn" onClick={handleSubmit}>Save comment</button>
+        <button className="btn" onClick={resetEdit}>Reset edits</button></>}
+    </div>
+  )
 }
 
-export default Comment
+export default Comment;

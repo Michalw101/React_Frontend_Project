@@ -6,12 +6,12 @@
     border-radius: 4px;
 }
 
- .addAlbum {
+.addAlbum {
     width: 300px;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    flex: 1; 
+    flex: 1;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -45,8 +45,13 @@
     justify-content: flex-start;
 }
 
-.btnAlbum
-{
+.btnAlbum {
     margin: 7px;
     padding: 7px;
+}
+
+.viewAlbum {
+    border: 1px solid #d7a7a7;
+    border-radius: 4px;
+    padding: 4px;
 }

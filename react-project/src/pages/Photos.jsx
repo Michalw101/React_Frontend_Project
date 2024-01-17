@@ -6,40 +6,36 @@ import "../css/Photos.css"
 import { useLocation } from "react-router";
 
 
-const Photos = (props) => {
+const Photos = () => {
   const user = useContext(UserContext);
   const [photos, setPhotos] = useState([]);
   const [photosPerPage, setPhotosPerPage] = useState(1);
   const [addPhoto, setAddPhoto] = useState(false);
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', thumbnailUrl: '' });
   const [hasMorePhotos, setHasMorePhotos] = useState(true);
-  
-  const { state } = useLocation();
-console.log(props.state)
+  // const { state } = useLocation();
+  // const { id, title } = state  || {};
+  // let albumId = id;
   let { albumId } = useParams();
   albumId = parseInt(albumId, 10);
   let returnMassege = "";
-
+ 
   useEffect(() => {
     funcGetPhotos();
-  }, [albumId]);
+  }, []);
 
   const funcGetPhotos = (() => {
-    // if(albumId belongs to user)
     fetch(`http://localhost:3000/photos?albumId=${albumId}&_page=${photosPerPage}&_limit=4`)
       .then(res => res.json())
       .then(data => {
         setPhotos([...photos, ...data]);
         setPhotosPerPage((prev) => (prev + 1));
 
-        // Check if there are more photos
         if (data.length == 0) {
           setHasMorePhotos(false);
         }
       });
   })
-
-
 
   if (!photos) {
     return <h1>Loading...</h1>
@@ -48,9 +44,6 @@ console.log(props.state)
   if (photos.length === 0) {
     returnMassege = <h1>No photos found.</h1>
   }
-
-
-
 
   const addPhotoClicked = () => {
 
@@ -62,13 +55,18 @@ console.log(props.state)
 
     fetch('http://localhost:3000/photos', requestOptions)
       .then(response => response.json())
-      .then(data => {
-        // setPhotos([...photos, data]);
-        setPhotos([...photos]);
+      .then((data) => {
+        if(!hasMorePhotos)
+        {
+          let arr = [...photos];
+          arr[arr.length] = data
+          setPhotos(arr);
+        }
+        else
+            setPhotos([...photos]);
         setAddPhoto(false);
         setNewPhoto({ title: '', url: '', thumbnailUrl: '' });
         setHasMorePhotos(true);
-
       })
       .catch(error => console.error('There was an error!', error));
   };
@@ -82,6 +80,7 @@ console.log(props.state)
 
     <div className='photos'>
       <h1>Photos of album number {albumId}</h1>
+      {/* <h2>Album's title: {title}</h2> */}
       {returnMassege}
       <Link className="return" to={`/home/users/${user.id}/albums/${albumId}`}>Return to albums</Link>
 

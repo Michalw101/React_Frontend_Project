@@ -1,15 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom"
+import React, { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom"
 import { UserContext } from "../App"
 
-
-const UserDetails = ({setUser}) => {
+const UserDetails = ({ setUser }) => {
   const navigate = useNavigate();
-  const user = useContext(UserContext);  
+  const user = useContext(UserContext);
   const [signUpError, setSignUpError] = useState('');
-
   const handleChange = (e) => {
-    
+
     const { name, value } = e.target;
     setUser((prevUser) => ({
       ...prevUser,
@@ -54,7 +52,6 @@ const UserDetails = ({setUser}) => {
     }));
   }
 
-
   const postUser = () => {
 
     const requestOptions = {
@@ -65,25 +62,21 @@ const UserDetails = ({setUser}) => {
     fetch(`http://localhost:3000/users`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        setUser((prevUser) => ({ ...prevUser, "id": data.id }));
-        handleLocalStorage(data.id);
+        setUser(data);
+        const detailsOfUserWithoutWebsite = { ...data };
+        delete detailsOfUserWithoutWebsite.website;
+        localStorage.setItem("currentUser", data.id);
+        localStorage.setItem(data.id, JSON.stringify(detailsOfUserWithoutWebsite));
+        navigate('/home');
       })
       .catch((error) => {
         setSignUpError(error.toString());
         console.error('There was an error!', error);
       });
-     
-  };
 
-  const handleLocalStorage = (newUserId) => {
-    const updatedUser = { ...user, "id": newUserId };
-    localStorage.setItem("currentUser", newUserId);
-    localStorage.setItem(newUserId, JSON.stringify(updatedUser));
-    navigate('/home');
   };
 
   return (
-
     <div className='registration'>
       <h2 className="title">User Details</h2><br />
       <input type="text" className='input' value={user.name} name="name" placeholder="name" onChange={handleChange} /><br />
@@ -104,4 +97,4 @@ const UserDetails = ({setUser}) => {
   )
 }
 
-export default UserDetails
+export default UserDetails;

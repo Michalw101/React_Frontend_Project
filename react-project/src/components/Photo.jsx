@@ -7,7 +7,6 @@ const Photo = ({ photo, setPhotos, photos }) => {
 
     const user = useContext(UserContext);
     const navigate = useNavigate();
-
     const [editPhoto, setEditPhoto] = useState({ ...photo });
     const [editState, setEditState] = useState(false);
 
@@ -24,9 +23,9 @@ const Photo = ({ photo, setPhotos, photos }) => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(photo)
+            body: JSON.stringify(editPhoto)
         };
-        fetch(`http://localhost:3000/photos/${photo.id}`, requestOptions)
+        fetch(`http://localhost:3000/photos/${editPhoto.id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setPhotos(photos.map(currentPhoto => photo.id == currentPhoto.id ? data : currentPhoto));

@@ -1,9 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../App.jsx"
 import Album from '../components/Album.jsx';
-import "../css/Album.css"
 import MyImage from '../images/Loading.gif';
-
+import "../css/Album.css"
 
 const Albums = () => {
 
@@ -16,19 +15,19 @@ const Albums = () => {
   let returnMassege = "";
 
   useEffect(() => {
-    if(user.id){
+    if (user.id) {
       fetch(`http://localhost:3000/albums/?userId=${user.id}`)
-      .then(res => res.json())
-      .then(data => {
-        setAlbums(data);
-      })
+        .then(res => res.json())
+        .then(data => {
+          setAlbums(data);
+        })
     }
   }, [user.id]);
 
 
   if (!albums) {
-  return <img src={MyImage} />;
-}
+    return <img src={MyImage} />;
+  }
 
   if (albums.length === 0) {
     returnMassege = <h1>No albums found.</h1>
@@ -50,7 +49,6 @@ const Albums = () => {
     return filteredAlbums;
 
   };
-
 
   const addAlbumClicked = () => {
 
@@ -75,45 +73,42 @@ const Albums = () => {
     setNewAlbum({ title: '', id: '' });
   };
 
-
   return (
-    <>
-      <div className='albums'>
-        <h1>Albums</h1>
-        {returnMassege}
+    <div className='albums'>
+      <h1>Albums</h1>
+      {returnMassege}
 
-        <div className='search'>
-          <label htmlFor="search" >Search: </label>
-          <input
-            type="text"
-            id="search"
-            value={searchBy}
-            onChange={handleSearchChange}
-          />
-        </div>
-        {addAlbum ? (
-            <div className='addAlbum'>
-              <input className='albumInput'
-                type="text"
-                value={newAlbum.title}
-                onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
-                placeholder="Album title"
-              /><br/>
-              <button  className='btnAlbum btn' onClick={addAlbumClicked}>Add Album</button>
-              <button className='btnAlbum btn' onClick={cancelAddAlbum}>Cancel</button>
-            </div>
-          ) : (
-            <button id="plus" onClick={() => setAddAlbum((prev) => !prev)}>➕ Add Album</button>
-          )}
-
-        <div id="allAlbums">
-          {sortedAndFilteredAlbums().map((album) => (
-            <Album key={album.id} album={album}/>
-          ))}
-        </div>
+      <div className='search'>
+        <label htmlFor="search" >Search: </label>
+        <input
+          type="text"
+          id="search"
+          value={searchBy}
+          onChange={handleSearchChange}
+        />
       </div>
-    </>
+      {addAlbum ? (
+        <div className='addAlbum'>
+          <input className='albumInput'
+            type="text"
+            value={newAlbum.title}
+            onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
+            placeholder="Album title"
+          /><br />
+          <button className='btnAlbum btn' onClick={addAlbumClicked}>Add Album</button>
+          <button className='btnAlbum btn' onClick={cancelAddAlbum}>Cancel</button>
+        </div>
+      ) : (
+        <button id="plus" onClick={() => setAddAlbum((prev) => !prev)}>➕ Add Album</button>
+      )}
+
+      <div id="allAlbums">
+        {sortedAndFilteredAlbums().map((album) => (
+          <Album key={album.id} album={album} />
+        ))}
+      </div>
+    </div>
   )
 }
 
-export default Albums
+export default Albums;

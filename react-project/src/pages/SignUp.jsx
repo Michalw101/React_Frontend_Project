@@ -19,8 +19,8 @@ function SignUp({ setUser }) {
             setSignUpError('The passwords are not the same.');
             return;
         }
-        // if (!CheckPassword(password))
-        //     return;
+        if (!CheckPassword(password))
+            return;
 
         fetch(`http://localhost:3000/users?username=${userName}`)
             .then(Response => Response.json())
@@ -28,10 +28,8 @@ function SignUp({ setUser }) {
                 userFromDB = user[0];
                 if (userFromDB != null) {
                     setSignUpError('User exists, please logIn');
-                    navigate('/login')
                 }
                 else {
-                    // navigate(`/userdetails?userName=${userName}&password=${password}`);
                     setUser((prevUser) => ({
                         ...prevUser,
                         "username": userName,
@@ -42,7 +40,6 @@ function SignUp({ setUser }) {
             });
 
     }
-
 
     function CheckPassword(password) {
         let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
