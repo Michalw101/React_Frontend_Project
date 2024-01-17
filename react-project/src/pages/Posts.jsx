@@ -15,11 +15,12 @@ const Posts = () => {
   let returnMassege = "";
 
   useEffect(() => {
+    if (user.id) {
     fetch(`http://localhost:3000/posts/?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setUserPosts(data);
-      })
+      })}
   }, []);
 
   useEffect(() => {

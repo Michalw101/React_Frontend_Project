@@ -22,7 +22,7 @@ const Albums = () => {
           setAlbums(data);
         })
     }
-  }, [user.id]);
+  }, []);
 
 
   if (!albums) {

@@ -44,10 +44,10 @@ function App() {
   );
 
   useEffect(() => {
-    if (user.id === "" && localStorage.getItem('currentUser') != null) {
+    if ( localStorage.getItem('currentUser') != null) {
       const currentUser = localStorage.getItem('currentUser');
-      const storedUser = JSON.parse(localStorage.getItem(currentUser));
-      setUser(storedUser);
+      const userFromLocalStorage = JSON.parse(localStorage.getItem(currentUser));
+      setUser(userFromLocalStorage);
     }
   }, [])
 

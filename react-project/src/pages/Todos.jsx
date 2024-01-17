@@ -14,11 +14,13 @@ const Todos = () => {
   const [searchCheckbox, setSearchCheckbox] = useState(false);
   let returnMassege = "";
   useEffect(() => {
+    if (user.id) {
     fetch(`http://localhost:3000/todos?userId=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setTodos(data);
       })
+    }
   }, []);
 
   if (!todos) {

@@ -13,11 +13,14 @@ const Comments = () => {
   let returnMassege;
 
   useEffect(() => {
+    if (user.id) {
+
     fetch(`http://localhost:3000/comments?postId=${postId}`)
       .then(response => response.json())
       .then(data => {
         setComments(data);
       })
+    }
   }, []);
 
   if (!comments) {
