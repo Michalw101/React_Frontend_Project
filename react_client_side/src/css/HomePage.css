@@ -5,7 +5,8 @@ body {
     direction: rtl;
     font-family: 'Bubblegum Sans', serif;
     font: 500 1rem 'Quicksand', sans-serif;
-    opacity: 100%;
+    /* opacity: 100%; */
+    background-color: white;
     margin: 0;
 }
 
